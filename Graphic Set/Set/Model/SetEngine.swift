@@ -35,6 +35,15 @@ struct SetEngine {
         return selectedCards.contains(where: { $0 == cardsOnDisplay[index] })
     }
     
+    mutating func shuffleCardsOnDislpay() {
+        var onDisplay = cardsOnDisplay
+        var shuffled = [Card]()
+        while onDisplay.count > 0 {
+            shuffled += [onDisplay.remove(at: onDisplay.randomIndex)]
+        }
+        cardsOnDisplay = shuffled
+    }
+    
     mutating func selectCard(at index: Int) {
         if cardsOnDisplay.count <= index {
             return
