@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yGN-vs-xhN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -316,6 +317,46 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="37.600000000000001" y="85.907046476761622"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="lfO-ZO-kgS">
+            <objects>
+                <viewController id="yGN-vs-xhN" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9EZ-sc-EBe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nHP-Kl-rK1" customClass="CardView" customModule="Set" customModuleProvider="target">
+                                <rect key="frame" x="50" y="160.5" width="275" height="366"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" priority="750" constant="500" id="1su-jO-eNa"/>
+                                    <constraint firstAttribute="width" secondItem="nHP-Kl-rK1" secondAttribute="height" multiplier="1.5:2" id="2Ml-FY-IPO"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="number">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="color" value="green"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="shade" value="striped"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.91273340889999999" blue="0.2262089159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="nHP-Kl-rK1" firstAttribute="centerY" secondItem="wxb-CE-OQz" secondAttribute="centerY" id="0V2-Ts-d6R"/>
+                            <constraint firstItem="nHP-Kl-rK1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="wxb-CE-OQz" secondAttribute="top" constant="50" id="58d-a8-I2O"/>
+                            <constraint firstItem="nHP-Kl-rK1" firstAttribute="centerX" secondItem="wxb-CE-OQz" secondAttribute="centerX" id="5zB-81-8gO"/>
+                            <constraint firstItem="wxb-CE-OQz" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="nHP-Kl-rK1" secondAttribute="trailing" constant="50" id="IFg-A9-VE3"/>
+                            <constraint firstItem="wxb-CE-OQz" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="nHP-Kl-rK1" secondAttribute="bottom" constant="50" id="Wl1-cA-Ty8"/>
+                            <constraint firstItem="nHP-Kl-rK1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wxb-CE-OQz" secondAttribute="leading" constant="50" id="gqt-MY-4jf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wxb-CE-OQz"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qn4-sC-HLw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="982" y="-54"/>
         </scene>
     </scenes>
 </document>
