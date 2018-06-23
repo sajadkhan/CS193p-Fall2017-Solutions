@@ -11,9 +11,9 @@ import UIKit
 @IBDesignable
 class CardView: UIView {
 
-    @IBInspectable var shade: String = "striped" { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    @IBInspectable var shade: String = "squiggle" { didSet { setNeedsDisplay(); setNeedsLayout() } }
     @IBInspectable var symbol: String = "oval" { didSet { setNeedsDisplay(); setNeedsLayout() } }
-    @IBInspectable var color: String = "green" { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    @IBInspectable var color: UIColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1) { didSet { setNeedsDisplay(); setNeedsLayout() } }
     @IBInspectable var number: Int = 3 { didSet { setNeedsDisplay(); setNeedsLayout() } }
     
     override func draw(_ rect: CGRect) {
@@ -21,16 +21,38 @@ class CardView: UIView {
         roundRect.addClip()
         UIColor.white.setFill()
         roundRect.fill()
-        drawSymbols()
+        
+        let originsToDraw = calculateOriginsToDraw(forSymbolCount: number)
+        
+        var drawingMethod: ((CGPoint) -> Void)?
+        
+        switch symbol {
+        case "oval":
+            drawingMethod = drawOval(at:)
+        case "diamond":
+            drawingMethod = drawDiamond(at:)
+        case "squiggle":
+            drawingMethod = drawSquiggle(at:)
+        default:
+            break
+        }
+        
+        if let drawingMethod = drawingMethod {
+            for origin in originsToDraw {
+                drawingMethod(origin)
+            }
+        }
+        
     }
     
     
-    private func drawSymbols() {
+    private func calculateOriginsToDraw(forSymbolCount count: Int) -> [CGPoint] {
+        var origins = [CGPoint]()
         let center = bounds.center
-        let symbolCountAboveCenter: Int = number/2
+        let symbolCountAboveCenter: Int = count/2
         var centerYOfFirst: CGFloat
         
-        if (number % 2) != 0 {
+        if (count % 2) != 0 {
             centerYOfFirst = center.y - ( CGFloat(symbolCountAboveCenter) * (shapeHeight + spaceBetweenShapes) )
         } else {
             centerYOfFirst = center.y - ( CGFloat(symbolCountAboveCenter) * (shapeHeight + spaceBetweenShapes) - (0.5 * (shapeHeight + spaceBetweenShapes)))
@@ -39,44 +61,57 @@ class CardView: UIView {
         let firstSymbolCenter = CGPoint(x: center.x, y: centerYOfFirst)
         
         var currentDrawingShapeCenter = firstSymbolCenter
-        for _ in 0..<number {
-            drawSymbolWith(centerAt: currentDrawingShapeCenter)
+        for _ in 0..<count {
+            let originToDraw = CGPoint(x: (currentDrawingShapeCenter.x - shapeWidth/2),
+                                       y: (currentDrawingShapeCenter.y - shapeHeight/2))
+            origins += [originToDraw]
             currentDrawingShapeCenter = CGPoint(x: currentDrawingShapeCenter.x,
                                     y: currentDrawingShapeCenter.y + (shapeHeight + spaceBetweenShapes))
+            
         }
-        
-        
+        return origins
     }
     
-    private func drawSymbolWith(centerAt center: CGPoint) {
-        switch symbol {
-        case "oval":
-            drawOval(with: center)
-        default:
-            break
-        }
-    }
+
     
-    private func drawOval(with center: CGPoint) {
-        let originToDraw = CGPoint(x: (center.x - shapeWidth/2),
-                                   y: (center.y - shapeHeight/2))
-    
-        let path = UIBezierPath(roundedRect: CGRect(origin: originToDraw, size: shapeSize), cornerRadius: cornerRadiusForOvalShape)
-        
+    private func drawOval(at origin: CGPoint) {
+        let path = UIBezierPath(roundedRect: CGRect(origin: origin, size: shapeSize), cornerRadius: cornerRadiusForOvalShape)
         applyShadingAndColor(to: path)
     }
     
+    private func drawDiamond(at origin: CGPoint) {
+        let pathBounds = CGRect(origin: origin, size: shapeSize)
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: pathBounds.minX, y: pathBounds.midY))
+        path.addLine(to: CGPoint(x: pathBounds.midX, y: pathBounds.minY))
+        path.addLine(to: CGPoint(x: pathBounds.maxX, y: pathBounds.midY))
+        path.addLine(to: CGPoint(x: pathBounds.midX, y: pathBounds.maxY))
+        path.close()
+        applyShadingAndColor(to: path)
+    }
+    
+    private func drawSquiggle(at origin: CGPoint) {
+        let pathBounds = CGRect(origin: origin, size: shapeSize)
+        let path = UIBezierPath()
+       
+        let offset = CGPoint(x: pathBounds.size.width/4, y: pathBounds.size.height/4)
+        path.move(to: CGPoint(x: pathBounds.minX, y: pathBounds.maxY))
+        path.addLine(to: CGPoint(x: pathBounds.minX + offset.x, y: pathBounds.minY + offset.y))
+        path.addLine(to: CGPoint(x: pathBounds.maxX, y: pathBounds.minY))
+        path.addLine(to: CGPoint(x: pathBounds.maxX - offset.x, y: pathBounds.maxY - offset.y))
+        path.close()
+        applyShadingAndColor(to: path)
+    }
     
     private func applyShadingAndColor(to path: UIBezierPath) {
-        
-        let color = UIColor.colorFromString(self.color)!
         color.setStroke()
         path.stroke()
         
-        if shade == "fill" {
+        switch shade {
+        case "solid":
             color.setFill()
             path.fill()
-        } else if shade == "striped" {
+        case "striped":
             if let context = UIGraphicsGetCurrentContext() {
                 context.saveGState()
                 
@@ -93,7 +128,10 @@ class CardView: UIView {
                 path.stroke()
                 context.restoreGState()
             }
+        default:
+            break
         }
+
     }
 
 }
@@ -131,25 +169,8 @@ extension CardView {
         return bounds.size.height * SizeRatio.spaceBetweenShapesCardsToBoundsHeight
     }
     
-    
-
-    
 }
 
-extension UIColor {
-    static func colorFromString(_ string: String) -> UIColor? {
-        switch string {
-        case "green":
-            return UIColor.green
-        case "red":
-            return UIColor.red
-        case "purple":
-            return UIColor.purple
-        default:
-            return nil
-        }
-    }
-}
 
 extension CGRect {
     var leftHalf: CGRect {
