@@ -72,6 +72,37 @@ class ViewController: UIViewController {
                     flyaway(cards: selectedCardViews)
                     selectedCardViews.removeAll()
                     updateViewFromModel()
+                    
+                } else {
+                    if selectedCardViews.count == 3 {
+                        let cards = selectedCardViews
+                        cards.forEach { cardView in
+                            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.1,
+                                                                                delay: 0.0,
+                                                                                options: [],
+                                                                                animations: {
+                                                                                    cardView.transform = cardView.transform.rotated(by: CGFloat.pi/8)
+                            }, completion: { finished in
+                                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.2,
+                                                                               delay: 0.0,
+                                                                               options: [],
+                                                                               animations: {
+                                                                                cardView.transform = cardView.transform.rotated(by: -2*CGFloat.pi/8)
+                                }, completion: { finished in
+                                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.1,
+                                                                                   delay: 0.0,
+                                                                                   options: [],
+                                                                                   animations: {
+                                                                                    cardView.transform = CGAffineTransform.identity
+                                    }, completion: { finished in
+                                        cardView.isSelected = false
+                                    })
+                                })
+                            })
+                        }
+                        selectedCardViews.removeAll()
+                        updateViewFromModel()
+                    }
                 }
             }
             
