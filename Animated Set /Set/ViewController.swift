@@ -18,6 +18,10 @@ class ViewController: UIViewController {
     private var selectedCardViews = [CardView]()
     private var displayedCards = [CardView]()
     
+    private lazy var animator = UIDynamicAnimator(referenceView: gameView)
+    private lazy var cardBehaviour = CardBehaviour(in: animator)
+
+    
     @IBOutlet weak var gameView: UIView! {
         didSet {
             let swipe = UISwipeGestureRecognizer(target: self, action: #selector(dealMoreCards))
@@ -46,13 +50,10 @@ class ViewController: UIViewController {
                     selectedCardViews.append(cardView)
                 }
                 
-                //print("index of selected card in displayed cards \(displayedCards.index(of: cardView)!)")
-                
                 if engine.selectCard(at: displayedCards.index(of: cardView)!) {
                     
                     for cardView in selectedCardViews {
                         
-                        cardView.removeFromSuperview()
                         let indexToReplace = displayedCards.index(of: cardView)!
                         
                         if engine.cardsOnDisplay.indices.contains(indexToReplace) {
@@ -62,12 +63,13 @@ class ViewController: UIViewController {
                                 cardViews += [cardView]
                                 displayedCards[indexToReplace] = cardView
                             }
-                            addCardsToDisplay(cardViews)
+                            flyIn(cardViews)
                         } else {
                             displayedCards.remove(at: indexToReplace)
                         }
                     }
                     
+                    flyaway(cards: selectedCardViews)
                     selectedCardViews.removeAll()
                     updateViewFromModel()
                 }
@@ -76,21 +78,6 @@ class ViewController: UIViewController {
         default:
             break
         }
-    }
-    
-    /*
-    @objc func shuffleCards(byHandlingGestureRecognizer recognizer: UIRotationGestureRecognizer) {
-        switch recognizer.state {
-        case .ended:
-            engine.shuffleCardsOnDislpay()
-            updateViewFromModel()
-        default:
-            break
-        }
-    }*/
-    
-    @IBAction func dealCardsPressed(_ sender: UIButton) {
-        dealMoreCards()
     }
     
     @objc func dealMoreCards() {
@@ -106,51 +93,47 @@ class ViewController: UIViewController {
                                                                    delay: 0.0,
                                                                    options: [],
                                                                    animations: {
-                        cardView.frame = frame.insetBy(dx: Constants.cardViewFrameInsetValue, dy: Constants.cardViewFrameInsetValue)
+                                                                    cardView.frame = frame.insetBy(dx: Constants.cardViewFrameInsetValue, dy: Constants.cardViewFrameInsetValue)
                     })
                 }
             }
             
             let cardViews: [CardView] = newCards.map { return makeCardView(with: $0, forIndex: self.engine.cardsOnDisplay.index(of: $0)!)! }
-            addCardsToDisplay(cardViews)
+            flyIn(cardViews)
             displayedCards += cardViews
         }
     }
     
-    
-    @IBAction func restartPressed(_ sender: UIButton) {
-        engine = SetEngine()
-        refreshCards()
-        updateViewFromModel()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private func flyaway(cards: [CardView]) {
+        cards.forEach {
+            $0.isSelected = false
+            cardBehaviour.addItem($0)
+        }
+        
+        _ = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { (timer) in
+            cards.forEach { (cardView) in
+                self.cardBehaviour.removeItem(cardView)
+                cardView.transform = CGAffineTransform.identity
+                
+                let snapTo = self.gameView.convert(self.dealtCardView.bounds.center, from: self.dealtCardView)
+                let snapBehavior =  UISnapBehavior(item: cardView, snapTo: snapTo)
+                self.animator.addBehavior(snapBehavior)
+                
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0,
+                                                               delay: 0.0,
+                                                               options: [],
+                                                               animations: {
+                                                                let frame = self.gameView.convert(self.dealtCardView.bounds, from: self.dealtCardView)
+                                                                
+                                                                cardView.frame.size = frame.size
+                })
+            }
+        })
+        
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        cardGrid.frame = gameView.bounds
-        addAllCardsFromModelToDisplay()
-    }
-    
-    private func updateViewFromModel() {
-        scoreLabel.text = "Score: \(engine.score)"
-        dealMoreCardsButton.isHidden = engine.deck.count == 0
-    }
-    
-    func refreshCards() {
-        displayedCards.removeAll()
-        cardGrid.frame = gameView.bounds
-        for view in gameView.subviews {
-            view.removeFromSuperview()
-        }
-        addAllCardsFromModelToDisplay()
-    }
-    
-    
-    private func addCardsToDisplay(_ cards: [CardView]) {
+    private func flyIn(_ cards: [CardView]) {
         cards.forEach { (cardView) in
             gameView.addSubview(cardView)
             
@@ -174,9 +157,47 @@ class ViewController: UIViewController {
                         cardView.isFaceUp = true
                 })
             })
-        
+            
         }
     }
+    
+    private func updateViewFromModel() {
+        scoreLabel.text = "Score: \(engine.score)"
+        dealMoreCardsButton.isHidden = engine.deck.count == 0
+    }
+    
+    
+    /*
+    @objc func shuffleCards(byHandlingGestureRecognizer recognizer: UIRotationGestureRecognizer) {
+        switch recognizer.state {
+        case .ended:
+            engine.shuffleCardsOnDislpay()
+            updateViewFromModel()
+        default:
+            break
+        }
+    }*/
+    
+    @IBAction func dealCardsPressed(_ sender: UIButton) {
+        dealMoreCards()
+    }
+    
+    
+    @IBAction func restartPressed(_ sender: UIButton) {
+        engine = SetEngine()
+        refreshCards()
+        updateViewFromModel()
+    }
+    
+    func refreshCards() {
+        displayedCards.removeAll()
+        cardGrid.frame = gameView.bounds
+        for view in gameView.subviews {
+            view.removeFromSuperview()
+        }
+        addAllCardsFromModelToDisplay()
+    }
+
     
     private func addAllCardsFromModelToDisplay() {
         cardGrid.cellCount = engine.cardsOnDisplay.count
@@ -186,7 +207,7 @@ class ViewController: UIViewController {
                 cardViews += [cardView]
             }
         }
-        addCardsToDisplay(cardViews)
+        flyIn(cardViews)
         displayedCards += cardViews
     }
     
@@ -207,6 +228,13 @@ class ViewController: UIViewController {
             return cardView
         }
         return nil
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        cardGrid.frame = gameView.bounds
+        addAllCardsFromModelToDisplay()
+        animator.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -236,3 +264,21 @@ struct CardAttributes {
     static let colors: [Card.Color: UIColor] = [.red: #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1), .purple: #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1), .green: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)]
 }
 
+extension ViewController: UIDynamicAnimatorDelegate {
+    func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+        let dynamicItems = animator.items(in: gameView.convert(view.bounds, from: view))
+        dynamicItems.forEach { (dynamicItem) in
+            if let cardView = dynamicItem as? CardView {
+                UIView.transition(
+                    with: cardView,
+                    duration: 0.5,
+                    options: [.transitionFlipFromLeft],
+                    animations: {
+                        cardView.isFaceUp = false
+                }, completion: { finished in
+                    cardView.removeFromSuperview()
+                })
+            }
+        }
+    }
+}

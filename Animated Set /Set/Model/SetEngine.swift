@@ -91,12 +91,11 @@ struct SetEngine {
     }
     
     private func checkIfIsASet(cards: [Card]) -> Bool {
-//        let numbers = Set(cards.map { $0.number }).count
-//        let shades = Set(cards.map { $0.shading }).count
-//        let colors = Set(cards.map { $0.color }).count
-//        let symbols = Set(cards.map { $0.symbol }).count
-//        return numbers != 2 && shades != 2 && colors != 2 && symbols != 2
-        return true
+        let numbers = Set(cards.map { $0.number }).count
+        let shades = Set(cards.map { $0.shading }).count
+        let colors = Set(cards.map { $0.color }).count
+        let symbols = Set(cards.map { $0.symbol }).count
+        return numbers != 2 && shades != 2 && colors != 2 && symbols != 2
     }
 
     

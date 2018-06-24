@@ -16,6 +16,7 @@
 		060BB27220DBDD40000E4F5D /* SetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060BB27120DBDD40000E4F5D /* SetUITests.swift */; };
 		060BB28120DBDD6F000E4F5D /* SetEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060BB28020DBDD6F000E4F5D /* SetEngine.swift */; };
 		060BB28320DBDDCA000E4F5D /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060BB28220DBDDCA000E4F5D /* Card.swift */; };
+		0696642A20DFB66100E78483 /* CardBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0696642920DFB66100E78483 /* CardBehaviour.swift */; };
 		06E964CB20DDE9CB00114A13 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E964CA20DDE9CB00114A13 /* Grid.swift */; };
 		06E964CE20DDED0C00114A13 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E964CD20DDED0C00114A13 /* CardView.swift */; };
 /* End PBXBuildFile section */
@@ -53,6 +54,7 @@
 		060BB27320DBDD40000E4F5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		060BB28020DBDD6F000E4F5D /* SetEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEngine.swift; sourceTree = "<group>"; };
 		060BB28220DBDDCA000E4F5D /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		0696642920DFB66100E78483 /* CardBehaviour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBehaviour.swift; sourceTree = "<group>"; };
 		06E964CA20DDE9CB00114A13 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		06E964CD20DDED0C00114A13 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,6 +111,7 @@
 				060BB25320DBDD3E000E4F5D /* ViewController.swift */,
 				06E964CD20DDED0C00114A13 /* CardView.swift */,
 				06E964CA20DDE9CB00114A13 /* Grid.swift */,
+				0696642920DFB66100E78483 /* CardBehaviour.swift */,
 				06E964CC20DDECE200114A13 /* Model */,
 				060BB25520DBDD3E000E4F5D /* Main.storyboard */,
 				060BB27F20DBDD52000E4F5D /* Supporting Files */,
@@ -290,6 +293,7 @@
 				06E964CB20DDE9CB00114A13 /* Grid.swift in Sources */,
 				06E964CE20DDED0C00114A13 /* CardView.swift in Sources */,
 				060BB28320DBDDCA000E4F5D /* Card.swift in Sources */,
+				0696642A20DFB66100E78483 /* CardBehaviour.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
