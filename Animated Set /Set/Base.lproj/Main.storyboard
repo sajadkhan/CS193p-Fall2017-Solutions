@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Set" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aI2-3h-kv4">
+                                <rect key="frame" x="0.0" y="20" width="375" height="527"/>
+                                <color key="backgroundColor" red="1" green="0.91273340889999999" blue="0.2262089159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bcr-Z4-HRD">
+                                <rect key="frame" x="0.0" y="547" width="375" height="120"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ZfQ-oL-ext">
+                                        <rect key="frame" x="20" y="0.0" width="335" height="120"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="u7A-RR-kDM">
+                                                <rect key="frame" x="0.0" y="22" width="306.5" height="76"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jaw-aQ-Fag">
+                                                        <rect key="frame" x="0.0" y="0.0" width="159" height="34"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="Deal 3 More Cards">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="dealCardsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G5O-G3-mYG"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nzt-Fp-6O9">
+                                                        <rect key="frame" x="0.0" y="42" width="64" height="34"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="Restart">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="restartPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cbz-0R-oZm"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jTS-Vj-ecK">
+                                                <rect key="frame" x="314.5" y="42" width="20.5" height="36"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                                <color key="textColor" red="1" green="0.91273340889999999" blue="0.2262089159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="ZfQ-oL-ext" secondAttribute="trailing" constant="20" symbolic="YES" id="0y6-b1-g79"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZfQ-oL-ext" secondAttribute="bottom" id="5KS-oq-Esv"/>
+                                    <constraint firstItem="ZfQ-oL-ext" firstAttribute="top" secondItem="bcr-Z4-HRD" secondAttribute="top" id="TYw-r0-8nJ"/>
+                                    <constraint firstItem="ZfQ-oL-ext" firstAttribute="leading" secondItem="bcr-Z4-HRD" secondAttribute="leading" constant="20" symbolic="YES" id="pU3-XU-pbN"/>
+                                    <constraint firstAttribute="height" constant="120" id="unX-hn-Us7"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="aI2-3h-kv4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="RiT-y3-zUU"/>
+                            <constraint firstItem="bcr-Z4-HRD" firstAttribute="top" secondItem="aI2-3h-kv4" secondAttribute="bottom" id="URl-xw-4e3"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bcr-Z4-HRD" secondAttribute="bottom" id="W7C-bv-RWJ"/>
+                            <constraint firstItem="aI2-3h-kv4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="WHw-kF-C1B"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bcr-Z4-HRD" secondAttribute="trailing" id="brq-NC-dqI"/>
+                            <constraint firstItem="bcr-Z4-HRD" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="oL6-IU-iB4"/>
+                            <constraint firstItem="aI2-3h-kv4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="yYD-lw-17D"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="dealMoreCardsButton" destination="jaw-aQ-Fag" id="1Eo-CH-0td"/>
+                        <outlet property="gameView" destination="aI2-3h-kv4" id="v4A-f1-HCa"/>
+                        <outlet property="scoreLabel" destination="jTS-Vj-ecK" id="Cgm-ZW-fYc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="37.600000000000001" y="85.907046476761622"/>
+        </scene>
+    </scenes>
+</document>
