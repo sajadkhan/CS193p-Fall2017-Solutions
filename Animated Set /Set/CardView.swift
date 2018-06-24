@@ -16,30 +16,48 @@ class CardView: UIView {
     @IBInspectable var color: UIColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1) { didSet { setNeedsDisplay(); setNeedsLayout() } }
     @IBInspectable var number: Int = 3 { didSet { setNeedsDisplay(); setNeedsLayout() } }
     
+    var isFaceUp: Bool = true { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    
+    var isSelected = false {
+        didSet {
+            self.layer.cornerRadius = cornerRadius
+            if isSelected {
+                self.layer.borderWidth = 3.0
+                self.layer.borderColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+            } else {
+                self.layer.borderWidth = 0.0
+                self.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+            }
+        }
+    }
+    
     override func draw(_ rect: CGRect) {
+        let cardColor = !isFaceUp ? UIColor.darkGray : .white
         let roundRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
         roundRect.addClip()
-        UIColor.white.setFill()
+        cardColor.setFill()
         roundRect.fill()
         
-        let originsToDraw = calculateOriginsToDraw(forSymbolCount: number)
-        
-        var drawingMethod: ((CGPoint) -> Void)?
-        
-        switch symbol {
-        case "oval":
-            drawingMethod = drawOval(at:)
-        case "diamond":
-            drawingMethod = drawDiamond(at:)
-        case "squiggle":
-            drawingMethod = drawSquiggle(at:)
-        default:
-            break
-        }
-        
-        if let drawingMethod = drawingMethod {
-            for origin in originsToDraw {
-                drawingMethod(origin)
+        if isFaceUp {
+            let originsToDraw = calculateOriginsToDraw(forSymbolCount: number)
+            
+            var drawingMethod: ((CGPoint) -> Void)?
+            
+            switch symbol {
+            case "oval":
+                drawingMethod = drawOval(at:)
+            case "diamond":
+                drawingMethod = drawDiamond(at:)
+            case "squiggle":
+                drawingMethod = drawSquiggle(at:)
+            default:
+                break
+            }
+            
+            if let drawingMethod = drawingMethod {
+                for origin in originsToDraw {
+                    drawingMethod(origin)
+                }
             }
         }
         

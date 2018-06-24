@@ -13,7 +13,7 @@ struct Card {
         case solid
         case striped
         case open
-        static let allCases: [Shade] = [.solid, .striped, .open]
+        static let allCases: [Shade] = [.solid]
     }
     
     enum Symbol: String {

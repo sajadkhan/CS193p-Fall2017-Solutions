@@ -44,19 +44,26 @@ struct SetEngine {
         cardsOnDisplay = shuffled
     }
     
-    mutating func selectCard(at index: Int) {
+    mutating func selectCard(at index: Int) -> Bool {
         if cardsOnDisplay.count <= index {
-            return
+            return false
         }
         let card = cardsOnDisplay[index]
         if !selectedCards.contains(where: { $0 == card }) {
-            if selectedCards.count == 3 {
+           /* if selectedCards.count == 3 {
+                selectedCards.removeAll()
+                selectedCards.append(card)
+            }
+            else*/
+            
+            if selectedCards.count == 2 {
+                selectedCards.append(card)
                 if checkIfIsASet(cards: selectedCards) {
                     removeTheMatchingSet()
                     score += 1
+                    return true
                 } else {
                     selectedCards.removeAll()
-                    selectedCards.append(card)
                     score -= 1
                 }
             } else {
@@ -65,24 +72,31 @@ struct SetEngine {
         } else {
             selectedCards.remove(at: selectedCards.index(of: card)!)
         }
+        return false
     }
     
     private mutating func removeTheMatchingSet() {
+        var cards = dealCards(Constants.numberOfCardsToDrawOnRequest)
         for card in selectedCards {
             if let index = cardsOnDisplay.index(of: card) {
-                cardsOnDisplay.remove(at: index)
+                if cards.count > 0 {
+                    cardsOnDisplay[index] = cards.removeLast()
+                } else {
+                    cardsOnDisplay.remove(at: index)
+                }
             }
         }
         selectedCards.removeAll()
-        dealCards(3)
+        
     }
     
     private func checkIfIsASet(cards: [Card]) -> Bool {
-        let numbers = Set(cards.map { $0.number }).count
-        let shades = Set(cards.map { $0.shading }).count
-        let colors = Set(cards.map { $0.color }).count
-        let symbols = Set(cards.map { $0.symbol }).count
-        return numbers != 2 && shades != 2 && colors != 2 && symbols != 2
+//        let numbers = Set(cards.map { $0.number }).count
+//        let shades = Set(cards.map { $0.shading }).count
+//        let colors = Set(cards.map { $0.color }).count
+//        let symbols = Set(cards.map { $0.symbol }).count
+//        return numbers != 2 && shades != 2 && colors != 2 && symbols != 2
+        return true
     }
 
     
@@ -97,22 +111,29 @@ struct SetEngine {
             checkIfIsASet(cards: selectedCards) {
             removeTheMatchingSet()
         } else {
-            dealCards(3)
+            let cards = dealCards(Constants.numberOfCardsToDrawOnRequest)
+            cardsOnDisplay += cards
         }
     }
     
-    mutating private func dealCards(_ count: Int) {
+    mutating private func dealCards(_ count: Int) -> [Card] {
         var cards = [Card]()
         if deck.count > 0 {
             for _ in 0..<count {
                 cards.append(fetchNextCardFromDeck())
             }
         }
-        cardsOnDisplay += cards
+        return cards
     }
     
     init() {
-        dealCards(12)
+        let cards = dealCards(Constants.numberOfCardsToDrawAtStart)
+        cardsOnDisplay += cards
+    }
+    
+    private struct Constants {
+        static let numberOfCardsToDrawAtStart = 12
+        static let numberOfCardsToDrawOnRequest = 3
     }
     
 }
