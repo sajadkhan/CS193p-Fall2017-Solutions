@@ -50,60 +50,9 @@ class ViewController: UIViewController {
                     selectedCardViews.append(cardView)
                 }
                 
-                if engine.selectCard(at: displayedCards.index(of: cardView)!) {
-                    
-                    for cardView in selectedCardViews {
-                        
-                        let indexToReplace = displayedCards.index(of: cardView)!
-                        
-                        if engine.cardsOnDisplay.indices.contains(indexToReplace) {
-                            var cardViews = [CardView]()
-                            if let cardView = makeCardView(with: engine.cardsOnDisplay[indexToReplace],
-                                                           forIndex: indexToReplace) {
-                                cardViews += [cardView]
-                                displayedCards[indexToReplace] = cardView
-                            }
-                            flyIn(cardViews)
-                        } else {
-                            displayedCards.remove(at: indexToReplace)
-                        }
-                    }
-                    
-                    flyaway(cards: selectedCardViews)
-                    selectedCardViews.removeAll()
-                    updateViewFromModel()
-                    
-                } else {
-                    if selectedCardViews.count == 3 {
-                        let cards = selectedCardViews
-                        cards.forEach { cardView in
-                            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.1,
-                                                                                delay: 0.0,
-                                                                                options: [],
-                                                                                animations: {
-                                                                                    cardView.transform = cardView.transform.rotated(by: CGFloat.pi/8)
-                            }, completion: { finished in
-                                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.2,
-                                                                               delay: 0.0,
-                                                                               options: [],
-                                                                               animations: {
-                                                                                cardView.transform = cardView.transform.rotated(by: -2*CGFloat.pi/8)
-                                }, completion: { finished in
-                                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.1,
-                                                                                   delay: 0.0,
-                                                                                   options: [],
-                                                                                   animations: {
-                                                                                    cardView.transform = CGAffineTransform.identity
-                                    }, completion: { finished in
-                                        cardView.isSelected = false
-                                    })
-                                })
-                            })
-                        }
-                        selectedCardViews.removeAll()
-                        updateViewFromModel()
-                    }
-                }
+                engine.selectCard(at: displayedCards.index(of: cardView)!)
+                updateViewFromModel()
+                
             }
             
         default:
@@ -113,8 +62,37 @@ class ViewController: UIViewController {
     
     @objc func dealMoreCards() {
         engine.dealThreeMoreCards()
+        updateViewFromModel()
+    }
+    
+    
+    private func updateViewFromModel() {
+        scoreLabel.text = "Score: \(engine.score)"
+        dealMoreCardsButton.isHidden = engine.deck.count == 0
+        
+        if engine.cardsNeedUpdate {
+            let cardViews :[CardView] = engine.fetchLastUpdate().map {
+                let cardView = makeCardView(with: engine.cardsOnDisplay[$0],
+                                            forIndex: $0)!
+                displayedCards[$0] = cardView
+                return cardView
+            }
+            flyIn(cards: cardViews)
+            flyaway(cards: selectedCardViews)
+            selectedCardViews.removeAll()
+        }
+        
+        if selectedCardViews.count == 3 && engine.selectedCards.count == 0 {
+            let cards = selectedCardViews
+            cards.forEach { cardView in
+                shake(card: cardView)
+            }
+            selectedCardViews.removeAll()
+        }
+    
         if displayedCards.count < engine.cardsOnDisplay.count {
-            let newCards = engine.cardsOnDisplay[engine.cardsOnDisplay.count-3..<engine.cardsOnDisplay.count]
+            
+            let newCards = engine.cardsOnDisplay[displayedCards.count..<engine.cardsOnDisplay.count]
             cardGrid.cellCount = displayedCards.count + newCards.count
             
             displayedCards.forEach { (cardView) in
@@ -128,73 +106,13 @@ class ViewController: UIViewController {
                     })
                 }
             }
+
             
             let cardViews: [CardView] = newCards.map { return makeCardView(with: $0, forIndex: self.engine.cardsOnDisplay.index(of: $0)!)! }
-            flyIn(cardViews)
+            flyIn(cards: cardViews)
             displayedCards += cardViews
         }
-    }
-    
-    private func flyaway(cards: [CardView]) {
-        cards.forEach {
-            $0.isSelected = false
-            cardBehaviour.addItem($0)
-        }
         
-        _ = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { (timer) in
-            cards.forEach { (cardView) in
-                self.cardBehaviour.removeItem(cardView)
-                cardView.transform = CGAffineTransform.identity
-                
-                let snapTo = self.gameView.convert(self.dealtCardView.bounds.center, from: self.dealtCardView)
-                let snapBehavior =  UISnapBehavior(item: cardView, snapTo: snapTo)
-                self.animator.addBehavior(snapBehavior)
-                
-                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0,
-                                                               delay: 0.0,
-                                                               options: [],
-                                                               animations: {
-                                                                let frame = self.gameView.convert(self.dealtCardView.bounds, from: self.dealtCardView)
-                                                                
-                                                                cardView.frame.size = frame.size
-                })
-            }
-        })
-        
-        
-    }
-    
-    private func flyIn(_ cards: [CardView]) {
-        cards.forEach { (cardView) in
-            gameView.addSubview(cardView)
-            
-            let orignalFrame = cardView.frame
-            cardView.frame = gameView.convert(cardDeckView.bounds, from: cardDeckView)
-            cardView.isFaceUp = false
-            
-            let index = cards.index(of: cardView)!
-            
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: Double(cards.count - index) * 0.15,
-                                                           delay: Double(index) * 0.17,
-                                                           options: [],
-                                                           animations: {
-                                                            cardView.frame = orignalFrame
-            }, completion: { finished in
-                UIView.transition(
-                    with: cardView,
-                    duration: 0.5,
-                    options: [.transitionFlipFromLeft],
-                    animations: {
-                        cardView.isFaceUp = true
-                })
-            })
-            
-        }
-    }
-    
-    private func updateViewFromModel() {
-        scoreLabel.text = "Score: \(engine.score)"
-        dealMoreCardsButton.isHidden = engine.deck.count == 0
     }
     
     
@@ -238,7 +156,7 @@ class ViewController: UIViewController {
                 cardViews += [cardView]
             }
         }
-        flyIn(cardViews)
+        flyIn(cards: cardViews)
         displayedCards += cardViews
     }
     
@@ -310,6 +228,92 @@ extension ViewController: UIDynamicAnimatorDelegate {
                     cardView.removeFromSuperview()
                 })
             }
+        }
+    }
+}
+
+extension ViewController {
+    func shake(card: CardView) {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.1,
+                                                       delay: 0.0,
+                                                       options: [],
+                                                       animations: {
+                                                        card.transform = card.transform.rotated(by: CGFloat.pi/8)
+        }, completion: { finished in
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.2,
+                                                           delay: 0.0,
+                                                           options: [],
+                                                           animations: {
+                                                            card.transform = card.transform.rotated(by: -2*CGFloat.pi/8)
+            }, completion: { finished in
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.1,
+                                                               delay: 0.0,
+                                                               options: [],
+                                                               animations: {
+                                                                card.transform = CGAffineTransform.identity
+                }, completion: { finished in
+                    card.isSelected = false
+                })
+            })
+        })
+    }
+    
+    private func flyaway(cards: [CardView]) {
+        cards.forEach {
+            $0.isSelected = false
+            cardBehaviour.addItem($0)
+        }
+        
+        _ = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { (timer) in
+            cards.forEach { (cardView) in
+                self.cardBehaviour.removeItem(cardView)
+                cardView.transform = CGAffineTransform.identity
+                
+                let snapTo = self.gameView.convert(self.dealtCardView.bounds.center, from: self.dealtCardView)
+                let snapBehavior =  UISnapBehavior(item: cardView, snapTo: snapTo)
+                self.animator.addBehavior(snapBehavior)
+                
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5,
+                                                               delay: 0.0,
+                                                               options: [],
+                                                               animations: {
+                                                                let frame = self.gameView.convert(self.dealtCardView.bounds, from: self.dealtCardView)
+                                                                
+                                                                cardView.frame.size = frame.size
+                })
+            }
+        })
+        
+        
+    }
+    
+    private func flyIn(cards: [CardView]) {
+        cards.forEach { (cardView) in
+            gameView.addSubview(cardView)
+            
+            let orignalFrame = cardView.frame
+            cardView.frame = gameView.convert(cardDeckView.bounds, from: cardDeckView)
+            cardView.isFaceUp = false
+            cardView.alpha = 0.0
+            
+            let index = cards.index(of: cardView)!
+            
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: Double(cards.count - index) * 0.15,
+                                                           delay: Double(index) * 0.17,
+                                                           options: [],
+                                                           animations: {
+                                                            cardView.frame = orignalFrame
+                                                            cardView.alpha = 1.0
+            }, completion: { finished in
+                UIView.transition(
+                    with: cardView,
+                    duration: 0.5,
+                    options: [.transitionFlipFromLeft],
+                    animations: {
+                        cardView.isFaceUp = true
+                })
+            })
+            
         }
     }
 }

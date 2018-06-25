@@ -30,6 +30,11 @@ struct SetEngine {
     private(set) var selectedCards = [Card]()
     private(set) var cardsOnDisplay = [Card]()
     private(set) var score = 0
+    private var indexesCardNeedsUpdate = [Int]()
+    
+    var cardsNeedUpdate: Bool {
+        return indexesCardNeedsUpdate.count > 0
+    }
     
     func isCardSelected(at index: Int) -> Bool {
         return selectedCards.contains(where: { $0 == cardsOnDisplay[index] })
@@ -44,24 +49,24 @@ struct SetEngine {
         cardsOnDisplay = shuffled
     }
     
-    mutating func selectCard(at index: Int) -> Bool {
+    mutating func fetchLastUpdate() -> [Int] {
+        let indexes = indexesCardNeedsUpdate
+        indexesCardNeedsUpdate.removeAll()
+        return indexes
+    }
+    
+    mutating func selectCard(at index: Int) {
         if cardsOnDisplay.count <= index {
-            return false
+            return
         }
         let card = cardsOnDisplay[index]
         if !selectedCards.contains(where: { $0 == card }) {
-           /* if selectedCards.count == 3 {
-                selectedCards.removeAll()
-                selectedCards.append(card)
-            }
-            else*/
-            
             if selectedCards.count == 2 {
                 selectedCards.append(card)
                 if checkIfIsASet(cards: selectedCards) {
                     removeTheMatchingSet()
                     score += 1
-                    return true
+                    return
                 } else {
                     selectedCards.removeAll()
                     score -= 1
@@ -72,7 +77,7 @@ struct SetEngine {
         } else {
             selectedCards.remove(at: selectedCards.index(of: card)!)
         }
-        return false
+        return
     }
     
     private mutating func removeTheMatchingSet() {
@@ -81,6 +86,7 @@ struct SetEngine {
             if let index = cardsOnDisplay.index(of: card) {
                 if cards.count > 0 {
                     cardsOnDisplay[index] = cards.removeLast()
+                    indexesCardNeedsUpdate += [index]
                 } else {
                     cardsOnDisplay.remove(at: index)
                 }
@@ -91,6 +97,7 @@ struct SetEngine {
     }
     
     private func checkIfIsASet(cards: [Card]) -> Bool {
+        
         let numbers = Set(cards.map { $0.number }).count
         let shades = Set(cards.map { $0.shading }).count
         let colors = Set(cards.map { $0.color }).count
