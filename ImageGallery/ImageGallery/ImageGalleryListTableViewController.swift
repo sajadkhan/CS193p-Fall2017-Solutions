@@ -24,17 +24,20 @@ class ImageGalleryListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        imageGalleries = ImageGallery.samples
+    }
+    
+    @IBAction func newGallery(_ sender: UIBarButtonItem) {
+        let name = "Untitled".madeUnique(withRespectTo: imageGalleries.map { return $0.name })
+        imageGalleries += [ImageGallery(with: name, items: [])]
         tableView.reloadData()
     }
-    /*
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         if splitViewController?.preferredDisplayMode != .primaryOverlay {
             splitViewController?.preferredDisplayMode = .primaryOverlay
         }
-    }*/
+    }
 
 
     // MARK: - Table view data source

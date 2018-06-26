@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		065A24D720E22E8400E24963 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065A24D620E22E8400E24963 /* Utilities.swift */; };
+		065A24DB20E26CDD00E24963 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065A24DA20E26CDC00E24963 /* ImageViewController.swift */; };
 		06F44E6F20E1E24D00E84C0D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F44E6E20E1E24D00E84C0D /* AppDelegate.swift */; };
 		06F44E7420E1E24D00E84C0D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06F44E7220E1E24D00E84C0D /* Main.storyboard */; };
 		06F44E7620E1E25000E84C0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06F44E7520E1E25000E84C0D /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		065A24D620E22E8400E24963 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		065A24DA20E26CDC00E24963 /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		06F44E6B20E1E24D00E84C0D /* ImageGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06F44E6E20E1E24D00E84C0D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		06F44E7320E1E24D00E84C0D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				06F44E8920E22A3500E84C0D /* ImageGalleryCollectionViewCell.swift */,
 				06F44E8520E1E3AF00E84C0D /* ImageGalleryListTableViewController.swift */,
 				06F44E8720E20C0F00E84C0D /* ImageGalleryListTableViewCell.swift */,
+				065A24DA20E26CDC00E24963 /* ImageViewController.swift */,
 				06F44E7220E1E24D00E84C0D /* Main.storyboard */,
 				06F44E8020E1E26400E84C0D /* Supporting Files */,
 				06F44E7A20E1E25000E84C0D /* Info.plist */,
@@ -164,6 +167,7 @@
 				06F44E6F20E1E24D00E84C0D /* AppDelegate.swift in Sources */,
 				06F44E8620E1E3AF00E84C0D /* ImageGalleryListTableViewController.swift in Sources */,
 				06F44E8420E1E39500E84C0D /* ImageGalleryViewController.swift in Sources */,
+				065A24DB20E26CDD00E24963 /* ImageViewController.swift in Sources */,
 				06F44E8A20E22A3500E84C0D /* ImageGalleryCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

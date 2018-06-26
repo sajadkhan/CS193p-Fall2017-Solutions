@@ -19,9 +19,20 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
             collectionView.dataSource = self
             collectionView.dragDelegate = self
             collectionView.dropDelegate = self
+            
+            let pinch = UIPinchGestureRecognizer(target: self, action: #selector(zoom(byHandlingPinch:)))
+            collectionView.addGestureRecognizer(pinch)
         }
     }
     
+    @objc private func zoom(byHandlingPinch recognizer: UIPinchGestureRecognizer) {
+        switch recognizer.state {
+        case .changed, .ended:
+            scale = max(recognizer.scale, 1.0)
+        default:
+            break
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,22 +53,40 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
             
             imageFetcher.fetch(imageURL, handler: { (url, image) in
                 DispatchQueue.main.async {
-                    galleryCell.image = image
-                    }
+                    galleryCell.image = image == nil ? UIImage(named: "missing") : image
+                }
             })
             
         }
         return cell
     }
     
-    func calculateSizeFor(itemAt indexPath: IndexPath) -> CGSize {
+    var flowLayout: UICollectionViewFlowLayout? {
+        return collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
+    }
+    
+    
+    private var scale: CGFloat = 1.0 {
+        didSet {
+            flowLayout?.invalidateLayout()
+        }
+    }
+    private var widthForCells: CGFloat {
+        return Constants.collectionViewCellDefaultWidth * scale
+    }
+    
+    private func calculateSizeFor(itemAt indexPath: IndexPath) -> CGSize {
         let item = imageGallery.items[indexPath.row]
-        let width = CGFloat(Constants.collectionViewCellWidth)
+        let width = widthForCells
         return CGSize(width: width, height: width * CGFloat(item.aspectRatio))
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return calculateSizeFor(itemAt: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "showImageView", sender: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
@@ -135,18 +164,22 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         }
     }
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "showImageView",
+            let indexPath = sender as? IndexPath,
+            let destination = segue.destination as? ImageViewController {
+            let item = imageGallery.items[indexPath.item]
+            destination.imageURL = item.url
+        }
     }
-    */
+    
     
     struct Constants {
-        static let collectionViewCellWidth = 200.0
+        static let collectionViewCellDefaultWidth: CGFloat = 100.0
     }
 
 }
