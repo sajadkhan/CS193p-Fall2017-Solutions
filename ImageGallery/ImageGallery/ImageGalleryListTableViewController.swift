@@ -27,12 +27,14 @@ class ImageGalleryListTableViewController: UITableViewController {
 
         imageGalleries = ImageGallery.samples
         tableView.reloadData()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    /*
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        if splitViewController?.preferredDisplayMode != .primaryOverlay {
+            splitViewController?.preferredDisplayMode = .primaryOverlay
+        }
+    }*/
 
 
     // MARK: - Table view data source
@@ -143,6 +145,10 @@ class ImageGalleryListTableViewController: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "showImageGallery", sender: indexPath)
+    }
+    
 
     /*
     // Override to support rearranging the table view.
@@ -159,15 +165,19 @@ class ImageGalleryListTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "showImageGallery",
+            let indexPath = sender as? IndexPath,
+            indexPath.section == 0,
+            let destination = segue.destination.contents as? ImageGalleryViewController {
+            destination.imageGallery = self.imageGalleries[indexPath.row]
+        }
     }
-    */
+    
 
 }
 
