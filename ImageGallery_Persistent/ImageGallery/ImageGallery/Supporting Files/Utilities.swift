@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Foundation
 
 class ImageFetcher
 {
@@ -28,6 +29,7 @@ class ImageFetcher
     // In other words, keeping a strong pointer to your instance says "I'm still interested in its result."
     
     var backup: UIImage? { didSet { callHandlerIfNeeded() } }
+    
     
     func fetch(_ url: URL) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
@@ -62,6 +64,28 @@ class ImageFetcher
         }
     }
     
+    func fetch(withCachePolicy cachePolicy: URLRequest.CachePolicy, url: URL, completion: @escaping (URL, UIImage?) -> Void) {
+        
+        let configrations = URLSessionConfiguration.default
+        configrations.urlCache = cache
+        configrations.requestCachePolicy = cachePolicy
+        
+        let session = URLSession(configuration: configrations)
+        
+        let task = session.dataTask(with: url, completionHandler: { (data, urlResponse, error) in
+            if error == nil,
+                let data = data,
+                let image = UIImage(data: data) {
+                completion(url, image)
+            } else {
+                completion(url, nil)
+            }
+        })
+        
+        task.resume()
+    }
+    
+    
     init() { self.handler = nil }
 
     init(handler: @escaping (URL, UIImage) -> Void) {
@@ -75,6 +99,11 @@ class ImageFetcher
 
     // Private Implementation
 
+    private lazy var cache = URLCache(memoryCapacity: defaultMemoryCache,
+                                      diskCapacity: defaultDiskCache,
+                                      diskPath: defaultCachePath)
+  
+    
     private let handler: ((URL, UIImage) -> Void)?
     private var fetchFailed = false { didSet { callHandlerIfNeeded() } }
     private func callHandlerIfNeeded() {
@@ -82,6 +111,11 @@ class ImageFetcher
             handler?(url, image)
         }
     }
+    
+    private let defaultMemoryCache = 20 * 1024
+    private let defaultDiskCache = 100 * 1024
+    private let defaultCachePath = "images"
+   
 }
 
 extension URL {

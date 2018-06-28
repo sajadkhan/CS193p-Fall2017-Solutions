@@ -17,7 +17,7 @@
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.tpl.ImageGallery.ig</string>
+				<string>com.tpl.imagegallery.ig</string>
 			</array>
 		</dict>
 		<dict>
@@ -86,7 +86,7 @@
 			<key>UTTypeIconFiles</key>
 			<array/>
 			<key>UTTypeIdentifier</key>
-			<string>com.tpl.ImageGallery.ig</string>
+			<string>com.tpl.imagegallery.ig</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

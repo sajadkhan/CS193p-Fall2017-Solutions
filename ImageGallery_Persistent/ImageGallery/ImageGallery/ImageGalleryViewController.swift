@@ -13,7 +13,16 @@ extension NSNotification.Name {
 }
 class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDragDelegate, UICollectionViewDropDelegate {
 
-    var imageGallery = ImageGallery()
+    var imageGallery = ImageGallery() {
+        didSet {
+            updateUIState()
+        }
+    }
+    
+    func updateUIState() {
+        let isEmpty = imageGallery.items.count == 0
+        emptyGalleryMessageLabel.isHidden = !isEmpty
+    }
 
     lazy var imageFetcher = ImageFetcher()
     
@@ -23,13 +32,15 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
             collectionView.dataSource = self
             collectionView.dragDelegate = self
             collectionView.dropDelegate = self
+            collectionView.dragInteractionEnabled = true
             
             let pinch = UIPinchGestureRecognizer(target: self, action: #selector(zoom(byHandlingPinch:)))
             collectionView.addGestureRecognizer(pinch)
         }
     }
     
-   
+    @IBOutlet weak var emptyGalleryMessageLabel: UILabel!
+    
     // MARK: - Zoom and Scaling
     
     private var scale: CGFloat = 1.0 {
@@ -56,6 +67,9 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     var document: ImageGalleryDocument?
     
     private func documentChanged() {
+        if document?.imageGallery != nil {
+            document?.thumbnail = self.collectionView.snapshot
+        }
         document?.imageGallery = imageGallery
         if document?.imageGallery != nil {
             document?.updateChangeCount(.done)
@@ -63,9 +77,6 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     }
     
     @IBAction func close(_ sender: UIBarButtonItem) {
-        if document?.imageGallery != nil {
-            document?.thumbnail = self.collectionView.snapshot
-        }
         dismiss(animated: true) {
             self.document?.close { success in
                 // when our document completes closing
@@ -85,14 +96,7 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        documentObserver = NotificationCenter.default.addObserver(
-            forName: Notification.Name.UIDocumentStateChanged,
-            object: document,
-            queue: OperationQueue.main,
-            using: { notification in
-                print("documentState changed to \(self.document!.documentState)")
-        }
-        )
+        updateUIState()
         
         document?.open(completionHandler: { (success) in
             if success {
@@ -121,7 +125,9 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
             let item = imageGallery.items[indexPath.item]
             let imageURL = item.url.imageURL
             
-            imageFetcher.fetch(imageURL, handler: { (url, image) in
+            imageFetcher.fetch(withCachePolicy: .returnCacheDataElseLoad,
+                               url: imageURL,
+                        completion: { (url, image) in
                 DispatchQueue.main.async {
                     galleryCell.image = image == nil ? UIImage(named: "missing") : image
                 }
@@ -206,7 +212,7 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
                 
                 item.dragItem.itemProvider.loadObject(ofClass: NSURL.self) { (url, error) in
                     if let url = url as? URL{
-                        self.imageFetcher.fetch(url.imageURL, handler: { (url, image) in
+                        self.imageFetcher.fetch(withCachePolicy: .returnCacheDataElseLoad, url: url, completion: { (url, image) in
                             DispatchQueue.main.async {
                                 var aspectRatio = Float(1.0)
                                 if let image = image {

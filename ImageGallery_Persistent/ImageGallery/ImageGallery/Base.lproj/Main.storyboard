@@ -82,12 +82,22 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please drop some images here." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8Z-lA-PzO">
+                                <rect key="frame" x="377" y="372" width="270" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="70e-Md-sgp" firstAttribute="leading" secondItem="NJv-fm-LPy" secondAttribute="leading" id="G6Z-po-SJE"/>
+                            <constraint firstItem="NJv-fm-LPy" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="w8Z-lA-PzO" secondAttribute="trailing" constant="8" id="GDR-eN-GHW"/>
                             <constraint firstItem="NJv-fm-LPy" firstAttribute="trailing" secondItem="70e-Md-sgp" secondAttribute="trailing" id="Gus-dI-j0x"/>
+                            <constraint firstItem="w8Z-lA-PzO" firstAttribute="centerY" secondItem="eT8-Cq-1sA" secondAttribute="centerY" id="L7Q-yJ-W7B"/>
                             <constraint firstItem="70e-Md-sgp" firstAttribute="top" secondItem="NJv-fm-LPy" secondAttribute="top" id="aN7-jn-x8s"/>
+                            <constraint firstItem="w8Z-lA-PzO" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NJv-fm-LPy" secondAttribute="leading" constant="8" id="uli-ZL-uZl"/>
+                            <constraint firstItem="w8Z-lA-PzO" firstAttribute="centerX" secondItem="eT8-Cq-1sA" secondAttribute="centerX" id="vQq-We-hi7"/>
                             <constraint firstItem="NJv-fm-LPy" firstAttribute="bottom" secondItem="70e-Md-sgp" secondAttribute="bottom" id="xI5-Bf-DTx"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NJv-fm-LPy"/>
@@ -101,6 +111,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="70e-Md-sgp" id="Ely-sb-JaO"/>
+                        <outlet property="emptyGalleryMessageLabel" destination="w8Z-lA-PzO" id="YVE-Hf-eEs"/>
                         <segue destination="GvE-BC-q2u" kind="show" identifier="showImageView" id="zqY-Nh-p91"/>
                     </connections>
                 </viewController>
@@ -124,7 +135,7 @@
                                 <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.9611357868" green="0.9611357868" blue="0.9611357868" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="j4c-Fi-RWh" firstAttribute="leading" secondItem="hKZ-MA-xpm" secondAttribute="leading" id="0cM-vj-lp5"/>
                             <constraint firstItem="hKZ-MA-xpm" firstAttribute="bottom" secondItem="j4c-Fi-RWh" secondAttribute="bottom" id="9SE-KD-3ZK"/>
