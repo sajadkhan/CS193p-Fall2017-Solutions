@@ -25,6 +25,18 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         }
     }
     
+    // MARK: - Zoom and Scaling
+    
+    private var scale: CGFloat = 1.0 {
+        didSet {
+            flowLayout?.invalidateLayout()
+        }
+    }
+    
+    private var widthForCells: CGFloat {
+        return Constants.collectionViewCellDefaultWidth * scale
+    }
+    
     @objc private func zoom(byHandlingPinch recognizer: UIPinchGestureRecognizer) {
         switch recognizer.state {
         case .changed, .ended:
@@ -33,11 +45,15 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
             break
         }
     }
+    
+    // MARK: - View's Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
     
+    // MARK: - CollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageGallery.items.count
@@ -61,18 +77,20 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         return cell
     }
     
+    // MARK: - CollectionViewDelegate
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "showImageView", sender: indexPath)
+    }
+    
+    // MARK: - CollectionViewDelegateFlowLayout
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return calculateSizeFor(itemAt: indexPath)
+    }
+    
+    // ColloectionView flow layout
     var flowLayout: UICollectionViewFlowLayout? {
         return collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
-    }
-    
-    
-    private var scale: CGFloat = 1.0 {
-        didSet {
-            flowLayout?.invalidateLayout()
-        }
-    }
-    private var widthForCells: CGFloat {
-        return Constants.collectionViewCellDefaultWidth * scale
     }
     
     private func calculateSizeFor(itemAt indexPath: IndexPath) -> CGSize {
@@ -81,13 +99,8 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         return CGSize(width: width, height: width * CGFloat(item.aspectRatio))
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return calculateSizeFor(itemAt: indexPath)
-    }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showImageView", sender: indexPath)
-    }
+    // MARK: - CollectionViewDragDelegate
     
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         session.localContext = collectionView
@@ -99,16 +112,16 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     }
 
     private func dragItem(at indexPath: IndexPath) -> [UIDragItem] {
-        let item = imageGallery.items[indexPath.item]
-        let string = "\(item.url.absoluteString)::\(String(item.aspectRatio))"
-        let dragItem = UIDragItem(itemProvider: NSItemProvider(object: string as NSItemProviderWriting))
-        dragItem.localObject = string
+        let url = imageGallery.items[indexPath.item].url
+        let dragItem = UIDragItem(itemProvider: NSItemProvider(object: url as NSItemProviderWriting))
+        dragItem.localObject = url
         return [dragItem]
     }
     
+    // MARK: - CollectionViewDropDelegate
+    
     func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
-        let isSelf = (session.localDragSession?.localContext as? UICollectionView) == collectionView
-        return isSelf ? session.canLoadObjects(ofClass: NSString.self) : (session.canLoadObjects(ofClass: NSURL.self) && session.canLoadObjects(ofClass: UIImage.self))
+        return session.canLoadObjects(ofClass: NSURL.self)
     }
     
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
@@ -119,16 +132,14 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
         let destinationIndexPath = coordinator.destinationIndexPath ?? IndexPath(row: 0, section: 0)
         for item in coordinator.items {
-            if let sourceIndex = item.sourceIndexPath {
-                if let string = item.dragItem.localObject as? String {
-                    let components = string.components(separatedBy: "::")
-                    let url = URL(string: components[0])
-                    let aspectRatio = Float(components[1])
-                    let galleryItem = ImageGallery.Item(url: url!, aspectRatio: aspectRatio!)
+            if let sourceIndexPath = item.sourceIndexPath {
+                if let url = item.dragItem.localObject as? URL {
+                    let aspectRatio = imageGallery.items[sourceIndexPath.item].aspectRatio
+                    let galleryItem = ImageGallery.Item(url: url, aspectRatio: aspectRatio)
                     collectionView.performBatchUpdates({
-                        imageGallery.items.remove(at: sourceIndex.item)
+                        imageGallery.items.remove(at: sourceIndexPath.item)
                         imageGallery.items.insert(galleryItem, at: destinationIndexPath.item)
-                        collectionView.deleteItems(at: [sourceIndex])
+                        collectionView.deleteItems(at: [sourceIndexPath])
                         collectionView.insertItems(at: [destinationIndexPath])
                     })
                     coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
@@ -136,24 +147,21 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
             } else {
                 let placeHolderContext = coordinator.drop(item.dragItem, to: UICollectionViewDropPlaceholder(insertionIndexPath: destinationIndexPath, reuseIdentifier: "GalleryCell"))
                 
-                
-                var aspectRatio = Float(1.0)
-                
-                item.dragItem.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
-                    if let image = image as? UIImage {
-                        aspectRatio = Float(image.size.height/image.size.width)
-                    }
-                }
-                
-                
                 item.dragItem.itemProvider.loadObject(ofClass: NSURL.self) { (url, error) in
                     if let url = url as? URL{
-                        DispatchQueue.main.async {
-                            let galleryItem = ImageGallery.Item(url: url, aspectRatio: aspectRatio)
-                            placeHolderContext.commitInsertion(dataSourceUpdates: { (insertionIndexPath) in
-                                self.imageGallery.items.insert(galleryItem, at: insertionIndexPath.item)
-                            })
-                        }
+                        self.imageFetcher.fetch(url, handler: { (url, image) in
+                            DispatchQueue.main.async {
+                                var aspectRatio = Float(1.0)
+                                if let image = image {
+                                    aspectRatio = Float(image.size.height/image.size.width)
+                                }
+                                let galleryItem = ImageGallery.Item(url: url, aspectRatio: aspectRatio)
+                                placeHolderContext.commitInsertion(dataSourceUpdates: { (insertionIndexPath) in
+                                    self.imageGallery.items.insert(galleryItem, at: insertionIndexPath.item)
+                                })
+                            }
+                        })
+                        
                     } else {
                         placeHolderContext.deletePlaceholder()
                     }

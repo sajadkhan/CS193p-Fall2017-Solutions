@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImageGallery/ImageGalleryViewController.swift"
-            timestampString = "551711185.029192"
+            timestampString = "551860859.055491"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
             landmarkName = "dragItem(at:)"
             landmarkType = "7">
          </BreakpointContent>

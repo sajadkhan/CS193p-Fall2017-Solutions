@@ -27,26 +27,26 @@ class ImageFetcher
     //   otherwise the result of the fetch will be discarded and the handler never called.
     // In other words, keeping a strong pointer to your instance says "I'm still interested in its result."
     
-//    var backup: UIImage? { didSet { callHandlerIfNeeded() } }
-//    
-//    func fetch(_ url: URL) {
-//        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-//            if let data = try? Data(contentsOf: url.imageURL) {
-//                if self != nil {
-//                    // yes, it's ok to create a UIImage off the main thread
-//                    if let image = UIImage(data: data) {
-//                        self?.handler(url, image)
-//                    } else {
-//                        self?.fetchFailed = true
-//                    }
-//                } else {
-//                    print("ImageFetcher: fetch returned but I've left the heap -- ignoring result.")
-//                }
-//            } else {
-//                self?.fetchFailed = true
-//            }
-//        }
-//    }
+    var backup: UIImage? { didSet { callHandlerIfNeeded() } }
+    
+    func fetch(_ url: URL) {
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            if let data = try? Data(contentsOf: url.imageURL) {
+                if self != nil {
+                    // yes, it's ok to create a UIImage off the main thread
+                    if let image = UIImage(data: data) {
+                        self?.handler?(url, image)
+                    } else {
+                        self?.fetchFailed = true
+                    }
+                } else {
+                    print("ImageFetcher: fetch returned but I've left the heap -- ignoring result.")
+                }
+            } else {
+                self?.fetchFailed = true
+            }
+        }
+    }
     
     func fetch(_ url: URL, handler: @escaping (URL, UIImage?) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -62,28 +62,26 @@ class ImageFetcher
         }
     }
     
-//    init() {
-//
-//    }
-//
-//    init(handler: @escaping (URL, UIImage) -> Void) {
-//        self.handler = handler
-//    }
-//
-//    init(fetch url: URL, handler: @escaping (URL, UIImage) -> Void) {
-//        self.handler = handler
-//        fetch(url)
-//    }
-//
-//    // Private Implementation
-//
-//    private let handler: (URL, UIImage) -> Void
-//    private var fetchFailed = false { didSet { callHandlerIfNeeded() } }
-//    private func callHandlerIfNeeded() {
-//        if fetchFailed, let image = backup, let url = image.storeLocallyAsJPEG(named: String(Date().timeIntervalSinceReferenceDate)) {
-//            handler(url, image)
-//        }
-//    }
+    init() { self.handler = nil }
+
+    init(handler: @escaping (URL, UIImage) -> Void) {
+        self.handler = handler
+    }
+
+    init(fetch url: URL, handler: @escaping (URL, UIImage) -> Void) {
+        self.handler = handler
+        fetch(url)
+    }
+
+    // Private Implementation
+
+    private let handler: ((URL, UIImage) -> Void)?
+    private var fetchFailed = false { didSet { callHandlerIfNeeded() } }
+    private func callHandlerIfNeeded() {
+        if fetchFailed, let image = backup, let url = image.storeLocallyAsJPEG(named: String(Date().timeIntervalSinceReferenceDate)) {
+            handler?(url, image)
+        }
+    }
 }
 
 extension URL {
