@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="F1P-E3-RcT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="ipad9_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
@@ -92,7 +92,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NJv-fm-LPy"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Gallery" id="dY8-Pr-6Pb"/>
+                    <navigationItem key="navigationItem" title="Gallery" id="dY8-Pr-6Pb">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="W34-dE-XWi">
+                            <connections>
+                                <action selector="close:" destination="bQV-Qo-Q8h" id="e5t-l3-iIf"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="70e-Md-sgp" id="Ely-sb-JaO"/>
                         <segue destination="GvE-BC-q2u" kind="show" identifier="showImageView" id="zqY-Nh-p91"/>
@@ -141,7 +147,7 @@
         <!--Navigation Controller-->
         <scene sceneID="PeS-BC-o5R">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="F1P-E3-RcT" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ImageGalleryMVC" automaticallyAdjustsScrollViewInsets="NO" id="F1P-E3-RcT" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vh8-SX-R3p">
                         <rect key="frame" x="0.0" y="20" width="1024" height="44"/>

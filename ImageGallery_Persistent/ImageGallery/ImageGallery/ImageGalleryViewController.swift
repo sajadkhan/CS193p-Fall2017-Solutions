@@ -8,9 +8,13 @@
 
 import UIKit
 
+extension NSNotification.Name {
+    static let ImageGalleryDidChanged = NSNotification.Name("ImageGalleryDidChanged")
+}
 class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDragDelegate, UICollectionViewDropDelegate {
 
     var imageGallery = ImageGallery()
+
     lazy var imageFetcher = ImageFetcher()
     
     @IBOutlet weak var collectionView: UICollectionView! {
@@ -25,6 +29,7 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         }
     }
     
+   
     // MARK: - Zoom and Scaling
     
     private var scale: CGFloat = 1.0 {
@@ -46,11 +51,60 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         }
     }
     
-    // MARK: - View's Life Cycle
+    // MARK: - Document
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    var document: ImageGalleryDocument?
+    
+    private func documentChanged() {
+        document?.imageGallery = imageGallery
+        if document?.imageGallery != nil {
+            document?.updateChangeCount(.done)
+        }
+    }
+    
+    @IBAction func close(_ sender: UIBarButtonItem) {
+        if document?.imageGallery != nil {
+            document?.thumbnail = self.collectionView.snapshot
+        }
+        dismiss(animated: true) {
+            self.document?.close { success in
+                // when our document completes closing
+                // stop observing its documentState changes
+                if let observer = self.documentObserver {
+                    NotificationCenter.default.removeObserver(observer)
+                }
+            }
+        }
+    }
+    
+    
+    // MARK: - View's Life Cycle
+
+    private var documentObserver: NSObjectProtocol?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        documentObserver = NotificationCenter.default.addObserver(
+            forName: Notification.Name.UIDocumentStateChanged,
+            object: document,
+            queue: OperationQueue.main,
+            using: { notification in
+                print("documentState changed to \(self.document!.documentState)")
+        }
+        )
+        
+        document?.open(completionHandler: { (success) in
+            if success {
+                self.title = self.document?.localizedName
+                if let imageGallery = self.document?.imageGallery {
+                    self.imageGallery = imageGallery
+                    self.collectionView.reloadData()
+                }
+                
+            }
+        })
+    
     }
     
     // MARK: - CollectionViewDataSource
@@ -141,7 +195,10 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
                         imageGallery.items.insert(galleryItem, at: destinationIndexPath.item)
                         collectionView.deleteItems(at: [sourceIndexPath])
                         collectionView.insertItems(at: [destinationIndexPath])
+                    }, completion: { success in
+                        self.documentChanged()
                     })
+                    documentChanged()
                     coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
                 }
             } else {
@@ -149,7 +206,7 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
                 
                 item.dragItem.itemProvider.loadObject(ofClass: NSURL.self) { (url, error) in
                     if let url = url as? URL{
-                        self.imageFetcher.fetch(url, handler: { (url, image) in
+                        self.imageFetcher.fetch(url.imageURL, handler: { (url, image) in
                             DispatchQueue.main.async {
                                 var aspectRatio = Float(1.0)
                                 if let image = image {
@@ -158,6 +215,7 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDelegate, UI
                                 let galleryItem = ImageGallery.Item(url: url, aspectRatio: aspectRatio)
                                 placeHolderContext.commitInsertion(dataSourceUpdates: { (insertionIndexPath) in
                                     self.imageGallery.items.insert(galleryItem, at: insertionIndexPath.item)
+                                    self.documentChanged()
                                 })
                             }
                         })
