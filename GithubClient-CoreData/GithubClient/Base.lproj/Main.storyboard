@@ -56,11 +56,12 @@
                     <navigationItem key="navigationItem" title="Search" id="h66-Lf-naz">
                         <barButtonItem key="rightBarButtonItem" title="Filter" id="1xL-N4-37Z">
                             <connections>
-                                <segue destination="VK8-F1-Z4S" kind="presentation" identifier="presentFilterControllerSegue" id="qB8-2Z-wc5"/>
+                                <segue destination="Geh-xS-gnc" kind="presentation" identifier="presentFilterControllerSegue" id="qB8-2Z-wc5"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="p8Y-lf-vWt">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
                             <action selector="refreshContrllerValueChanged:" destination="cCF-yP-ftT" eventType="valueChanged" id="SmH-Wx-XUE"/>
@@ -74,10 +75,10 @@
             </objects>
             <point key="canvasLocation" x="591" y="420"/>
         </scene>
-        <!--Filter Picker View Controller-->
+        <!--Choose-->
         <scene sceneID="ZHW-HI-w9y">
             <objects>
-                <tableViewController id="VK8-F1-Z4S" customClass="FilterPickerViewController" sceneMemberID="viewController">
+                <tableViewController id="VK8-F1-Z4S" customClass="FilterPickerViewController" customModule="GithubClient" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="aB3-Uf-KIX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -97,10 +98,17 @@
                             <outlet property="delegate" destination="VK8-F1-Z4S" id="MEE-ce-LgD"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Choose" id="feo-Ws-Ujl">
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="JcA-97-rJZ">
+                            <connections>
+                                <action selector="cancelPressed:" destination="VK8-F1-Z4S" id="hu4-at-0gw"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NJ7-dm-WBg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1404" y="420"/>
+            <point key="canvasLocation" x="2343.1999999999998" y="419.64017991004499"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="AJi-LY-haD">
@@ -119,6 +127,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="teB-SZ-ysq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-239.19999999999999" y="500.59970014992507"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="vty-EV-euD">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Geh-xS-gnc" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Btd-hB-kBx">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="VK8-F1-Z4S" kind="relationship" relationship="rootViewController" id="SWf-Ux-Gih"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5pz-jr-IRz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1404" y="419.64017991004499"/>
         </scene>
     </scenes>
 </document>

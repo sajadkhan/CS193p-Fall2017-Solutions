@@ -25,7 +25,10 @@ class GithubSearchViewController: UITableViewController {
     
     func updateSearch(forText text: String) {
         let request = GithubRequest()
-        request.requestSearchAPI(for: .users, searchText: text, sort: nil, order: nil) { repos in
+        request.requestSearchAPI(for: filter.relatedGithubSearchAPI!,
+                                 searchText: text,
+                                 sort: nil,
+                                 order: nil) { repos in
             if let repos = repos {
                 DispatchQueue.main.async {
                     self.tableView.refreshControl?.endRefreshing()
@@ -36,11 +39,19 @@ class GithubSearchViewController: UITableViewController {
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.title = "\(filter.rawValue)"
+    }
+    
     // MARK: - Search Filter
     
     private func updateFilter(to filter: SearchFilter) {
-        navigationItem.title = "Search \(filter.rawValue)"
-        self.filter = filter
+        navigationItem.title = "\(filter.rawValue)"
+        if self.filter != filter {
+            self.filter = filter
+            updateSearch(forText: searchBar.text!)
+        }
     }
     
     
@@ -67,28 +78,24 @@ class GithubSearchViewController: UITableViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "presentFilterControllerSegue",
-            let filtersVC = segue.destination as? FilterPickerViewController {
-            filtersVC.didSelectFilter { filter in 
-                dismiss(animated: true, completion: false)
+            let filtersVC = segue.destination.contents as? FilterPickerViewController {
+            filtersVC.didSelectFilter = { [weak self] filter in
+                self?.updateFilter(to: filter)
+                self?.presentedViewController?.dismiss(animated: true, completion: nil)
             }
         }
     }
-    
- 
 }
 
-extension GithubSearchViewController {
-    private func githubAPIForFilter(_ filter: SearchFilter) -> GithubRequest.SearchAPI? {
-        switch filter {
-        case .repository:
-            return .repo
-        case .user:
-            return .users
-        case .commits:
-            return commits
-        default:
-            nil
+
+extension UIViewController {
+    var contents: UIViewController {
+        if let navVC = self as? UINavigationController {
+            return navVC.visibleViewController ?? navVC
+        } else {
+            return self
         }
+        
     }
 }
 

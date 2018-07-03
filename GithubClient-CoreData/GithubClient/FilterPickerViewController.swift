@@ -8,21 +8,38 @@
 
 import UIKit
 
+enum SearchFilter: String {
+    case repository = "Repository"
+    case user = "User"
+    case commits = "Commits"
+    
+    static let allCases: [SearchFilter] = [.repository, .user, .commits]
+}
+
+extension SearchFilter {
+    var relatedGithubSearchAPI: GithubRequest.SearchAPI? {
+        switch self {
+        case .repository:
+            return .repo
+        case .user:
+            return .users
+        case .commits:
+            return .commits
+        }
+    }
+}
+
 class FilterPickerViewController: UITableViewController {
 
-    // Model
-    enum SearchFilter: String {
-        case .repository = "Repository"
-        case .user = "User"
-        case .commits = "Commits"
-        
-        static let allCases: [SearchFilter] = [.repository, .user, .commits]
+    // Closure to tell that new filter is seleted
+    var didSelectFilter: ( (SearchFilter) -> Void )?
+    
+    @IBAction func cancelPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
     
+    // Model
     private var filters: [SearchFilter] = SearchFilter.allCases
-    
-    // Closure to tell that new filter is seleted
-    weak var didSelectFilter: ( (SearchFilter) -> Void )?
 
 
     // MARK: - UITableViewDataSource
@@ -42,7 +59,7 @@ class FilterPickerViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if didSelectFilter != nil {
-            didSelectFilter(filters[indexPath.row])
+            didSelectFilter!(filters[indexPath.row])
         }
     }
 
