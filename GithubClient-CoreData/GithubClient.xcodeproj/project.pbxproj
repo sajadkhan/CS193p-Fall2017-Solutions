@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0665AD6820E8773700606887 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665AD6720E8773700606887 /* AppDelegate.swift */; };
-		0665AD6A20E8773700606887 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665AD6920E8773700606887 /* ViewController.swift */; };
+		0665AD6A20E8773700606887 /* GithubSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665AD6920E8773700606887 /* GithubSearchViewController.swift */; };
 		0665AD6D20E8773700606887 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0665AD6B20E8773700606887 /* Main.storyboard */; };
 		0665AD7020E8773700606887 /* GithubClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0665AD6E20E8773700606887 /* GithubClient.xcdatamodeld */; };
 		0665AD7220E8773900606887 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0665AD7120E8773900606887 /* Assets.xcassets */; };
@@ -22,7 +22,7 @@
 /* Begin PBXFileReference section */
 		0665AD6420E8773700606887 /* GithubClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0665AD6720E8773700606887 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0665AD6920E8773700606887 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0665AD6920E8773700606887 /* GithubSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubSearchViewController.swift; sourceTree = "<group>"; };
 		0665AD6C20E8773700606887 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0665AD6F20E8773700606887 /* GithubClient.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GithubClient.xcdatamodel; sourceTree = "<group>"; };
 		0665AD7120E8773900606887 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -64,8 +64,8 @@
 		0665AD6620E8773700606887 /* GithubClient */ = {
 			isa = PBXGroup;
 			children = (
-				0665AD7C20E8774C00606887 /* Source */,
-				0665AD6920E8773700606887 /* ViewController.swift */,
+				0665AD7C20E8774C00606887 /* Supporting Files */,
+				0665AD6920E8773700606887 /* GithubSearchViewController.swift */,
 				0665AD8420E8994700606887 /* Github */,
 				0665AD6B20E8773700606887 /* Main.storyboard */,
 				0665AD7620E8773900606887 /* Info.plist */,
@@ -74,14 +74,14 @@
 			path = GithubClient;
 			sourceTree = "<group>";
 		};
-		0665AD7C20E8774C00606887 /* Source */ = {
+		0665AD7C20E8774C00606887 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				0665AD6720E8773700606887 /* AppDelegate.swift */,
 				0665AD7120E8773900606887 /* Assets.xcassets */,
 				0665AD7320E8773900606887 /* LaunchScreen.storyboard */,
 			);
-			path = Source;
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		0665AD7D20E8775A00606887 /* Core Data  */ = {
@@ -174,7 +174,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0665AD6A20E8773700606887 /* ViewController.swift in Sources */,
+				0665AD6A20E8773700606887 /* GithubSearchViewController.swift in Sources */,
 				0665AD8820E8B14D00606887 /* QueryResult.swift in Sources */,
 				0665AD7020E8773700606887 /* GithubClient.xcdatamodeld in Sources */,
 				0665AD8620E899DF00606887 /* Owner.swift in Sources */,
