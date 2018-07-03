@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0601048720EB68A300F7B529 /* FilterPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0601048620EB68A300F7B529 /* FilterPickerViewController.swift */; };
+		0601048720EB68A300F7B529 /* ChooseFilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0601048620EB68A300F7B529 /* ChooseFilterTableViewController.swift */; };
 		0665AD6820E8773700606887 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665AD6720E8773700606887 /* AppDelegate.swift */; };
 		0665AD6A20E8773700606887 /* GithubSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665AD6920E8773700606887 /* GithubSearchViewController.swift */; };
 		0665AD6D20E8773700606887 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0665AD6B20E8773700606887 /* Main.storyboard */; };
@@ -22,7 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0601048620EB68A300F7B529 /* FilterPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterPickerViewController.swift; sourceTree = "<group>"; };
+		0601048620EB68A300F7B529 /* ChooseFilterTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseFilterTableViewController.swift; sourceTree = "<group>"; };
 		0665AD6420E8773700606887 /* GithubClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0665AD6720E8773700606887 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0665AD6920E8773700606887 /* GithubSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubSearchViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 			children = (
 				0665AD7C20E8774C00606887 /* Supporting Files */,
 				0665AD6920E8773700606887 /* GithubSearchViewController.swift */,
-				0601048620EB68A300F7B529 /* FilterPickerViewController.swift */,
+				0601048620EB68A300F7B529 /* ChooseFilterTableViewController.swift */,
 				0665AD8420E8994700606887 /* Github */,
 				0665AD6B20E8773700606887 /* Main.storyboard */,
 				0665AD7620E8773900606887 /* Info.plist */,
@@ -184,7 +184,7 @@
 				0665AD8820E8B14D00606887 /* QueryResult.swift in Sources */,
 				0665AD7020E8773700606887 /* GithubClient.xcdatamodeld in Sources */,
 				0665AD8620E899DF00606887 /* Owner.swift in Sources */,
-				0601048720EB68A300F7B529 /* FilterPickerViewController.swift in Sources */,
+				0601048720EB68A300F7B529 /* ChooseFilterTableViewController.swift in Sources */,
 				0665AD8120E8975600606887 /* Repository.swift in Sources */,
 				0665AD7F20E8791800606887 /* GithubRequest.swift in Sources */,
 				06E93DD020EB7A3800DCDC5F /* Code.swift in Sources */,

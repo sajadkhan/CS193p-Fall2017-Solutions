@@ -88,7 +88,7 @@ class GithubSearchViewController: UITableViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "presentFilterControllerSegue",
-            let filtersVC = segue.destination.contents as? FilterPickerViewController {
+            let filtersVC = segue.destination.contents as? ChooseFilterTableViewController {
             filtersVC.didSelectFilter = { [weak self] filter in
                 self?.updateFilter(to: filter)
                 self?.presentedViewController?.dismiss(animated: true, completion: nil)
@@ -113,6 +113,7 @@ extension GithubSearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.hasValidEntry {
             performSearch(forText: searchBar.text!)
+            searchBar.resignFirstResponder()
         }
         
     }

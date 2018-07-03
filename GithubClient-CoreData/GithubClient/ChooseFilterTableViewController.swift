@@ -29,7 +29,7 @@ extension SearchFilter {
     }
 }
 
-class FilterPickerViewController: UITableViewController {
+class ChooseFilterTableViewController: UITableViewController {
 
     // Closure to tell that new filter is seleted
     var didSelectFilter: ( (SearchFilter) -> Void )?
