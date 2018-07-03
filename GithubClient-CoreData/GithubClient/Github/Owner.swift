@@ -27,6 +27,4 @@ extension Owner: SearchResultItem {
     var title: String {
         return name
     }
-    
-    
 }

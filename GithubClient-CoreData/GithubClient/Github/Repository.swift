@@ -16,8 +16,8 @@ struct Repository: Codable {
     let owner: Owner
     let isPrivate: Bool
     let description: String?
-    let createdDate: String
-    let size: Int
+    let createdDate: String?
+    let size: Int?
     let language: String?
 
     enum CodingKeys: String, CodingKey {

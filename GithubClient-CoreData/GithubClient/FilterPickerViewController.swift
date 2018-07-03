@@ -11,9 +11,9 @@ import UIKit
 enum SearchFilter: String {
     case repository = "Repository"
     case user = "User"
-    case commits = "Commits"
+    case code = "Code"
     
-    static let allCases: [SearchFilter] = [.repository, .user, .commits]
+    static let allCases: [SearchFilter] = [.repository, .user, .code]
 }
 
 extension SearchFilter {
@@ -23,8 +23,8 @@ extension SearchFilter {
             return .repo
         case .user:
             return .users
-        case .commits:
-            return .commits
+        case .code:
+            return .code
         }
     }
 }

@@ -17,40 +17,50 @@ class GithubSearchViewController: UITableViewController {
     }
     
     @IBAction func refreshContrllerValueChanged(_ sender: UIRefreshControl) {
-        if let text = searchBar.text {
-            updateSearch(forText: text)
+        refreshSearchResults()
+    }
+    
+    private func refreshSearchResults() {
+        if searchBar.hasValidEntry {
+            performSearch(forText: searchBar.text!)
         }
     }
     
-    
-    func updateSearch(forText text: String) {
+    func performSearch(forText text: String) {
         let request = GithubRequest()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         request.requestSearchAPI(for: filter.relatedGithubSearchAPI!,
                                  searchText: text,
                                  sort: nil,
-                                 order: nil) { repos in
-            if let repos = repos {
-                DispatchQueue.main.async {
-                    self.tableView.refreshControl?.endRefreshing()
-                    self.searchResults = repos
-                    self.tableView.reloadData()
-                }
-            }
+                                 order: nil) { items in
+                                    DispatchQueue.main.async {
+                                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                                        self.tableView.refreshControl?.endRefreshing()
+                                        self.searchResults.removeAll()
+                                        if let items = items {
+                                            self.searchResults = items
+                                        }
+                                        self.tableView.reloadData()
+                                    }
         }
+    }
+    
+    private func setNavigationTitle(forFilter filter: SearchFilter) {
+        navigationItem.title = "Search \(filter.rawValue)"
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "\(filter.rawValue)"
+        setNavigationTitle(forFilter: filter)
     }
     
     // MARK: - Search Filter
     
     private func updateFilter(to filter: SearchFilter) {
-        navigationItem.title = "\(filter.rawValue)"
         if self.filter != filter {
+            setNavigationTitle(forFilter: filter)
             self.filter = filter
-            updateSearch(forText: searchBar.text!)
+            refreshSearchResults()
         }
     }
     
@@ -101,13 +111,17 @@ extension UIViewController {
 
 extension GithubSearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let text = searchBar.text,
-            !text.isEmpty {
-            updateSearch(forText: text)
+        if searchBar.hasValidEntry {
+            performSearch(forText: searchBar.text!)
         }
         
     }
 }
 
+extension UISearchBar {
+    var hasValidEntry: Bool {
+        return (self.text != nil) && (!(self.text?.isEmpty)!)
+    }
+}
 
 

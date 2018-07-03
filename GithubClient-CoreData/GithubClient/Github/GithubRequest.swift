@@ -24,7 +24,7 @@ struct GithubRequest {
     enum SearchAPI: String {
         case repo = "/search/repositories"
         case users = "/search/users"
-        case commits = "/search/commits"
+        case code = "/search/code"
     }
     
     // Factory method to make url for a particular API
@@ -75,8 +75,8 @@ struct GithubRequest {
                         resultItems = Repository.decodeDataWithArrayType(data: resultItemsData)
                     case .users:
                         resultItems = Owner.decodeDataWithArrayType(data: resultItemsData)
-                    default:
-                        break
+                    case .code:
+                        resultItems = Code.decodeDataWithArrayType(data: resultItemsData)
                     }
                     completion(resultItems)
                 } else {
