@@ -7,6 +7,18 @@
 //
 
 import Foundation
+
+protocol SearchResultItem {
+    var title: String { get }
+    var subtitle: String { get }
+}
+
+extension SearchResultItem {
+    var subtitle: String {
+        return ""
+    }
+}
+
 struct GithubRequest {
     // Supported Search APIs
     enum SearchAPI: String {
@@ -22,7 +34,7 @@ struct GithubRequest {
     }
     
     // Fetch data from network
-    func requestData(forURL url: URL, completion: @escaping (QueryResult?, Error?) -> (Void)) {
+    private func requestData(forURL url: URL, completion: @escaping (QueryResult?, Error?) -> (Void)) {
         let task = URLSession.shared.dataTask(with: url) { (data, urlResponse, error) in
             if error != nil {
                 completion(nil, error)
@@ -34,14 +46,13 @@ struct GithubRequest {
         task.resume()
     }
     
-    
-    // Request Search API for repos against a given text. Sort and Order parameters are not mendatory
-    func requestSearchRepos(forText text: String,
-                            sortUsing sort: String?,
-                            order: String?,
-                            completion: @escaping (([Repository]?) -> Void)
-                            )
-    {
+    // Request Search API for repos, users and others, see SearchAPI enum against a given searchText. Sort and Order parameters are not mendatory
+    func requestSearchAPI(for api: SearchAPI,
+                          searchText text: String,
+                          sort: String?,
+                          order: String?,
+                          completion: @escaping (([SearchResultItem]?) -> Void)) {
+        
         var params = [String:String?]()
         params[GithubKeys.query] = text
         if let sort = sort {
@@ -50,23 +61,33 @@ struct GithubRequest {
         if let order = order {
             params[GithubKeys.order] = order
         }
-    
-        if let url = urlForSearchAPI(.repo, withParams: params) {
+        
+        
+        if let url = urlForSearchAPI(api, withParams: params) {
             requestData(forURL: url) { (result, error) -> (Void) in
                 if error != nil {
                     completion(nil)
                 } else if let result = result,
                     let resultItemsData = result.resultItemsAsJsonData() {
-                        let repos = Repository.decodeDataWithArrayType(data: resultItemsData)
-                        completion(repos)
+                    var resultItems: [SearchResultItem]?
+                    switch api {
+                    case .repo:
+                        resultItems = Repository.decodeDataWithArrayType(data: resultItemsData)
+                    case .users:
+                        resultItems = Owner.decodeDataWithArrayType(data: resultItemsData)
+                    default:
+                        break
+                    }
+                    completion(resultItems)
                 } else {
                     completion(nil)
                 }
             }
+        } else {
+            completion(nil)
         }
     }
 
-    
 
     // Search Paths
     struct SearchPath {

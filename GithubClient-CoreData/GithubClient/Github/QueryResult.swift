@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 struct QueryResult {
     public typealias PropertyList = Any
     

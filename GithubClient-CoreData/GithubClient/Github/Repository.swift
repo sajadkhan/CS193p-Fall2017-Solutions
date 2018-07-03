@@ -31,3 +31,12 @@ struct Repository: Codable {
         return try? JSONDecoder().decode([Repository].self, from: data)
     }
 }
+
+extension Repository: SearchResultItem {
+    var title: String {
+        return name
+    }
+    var subtitle: String {
+        return fullName
+    }
+}

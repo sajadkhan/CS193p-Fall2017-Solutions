@@ -17,4 +17,16 @@ struct Owner: Codable {
         case avatarURL = "avatar_url"
         case id
     }
+    
+    static func decodeDataWithArrayType(data: Data) -> [Owner]? {
+        return try? JSONDecoder().decode([Owner].self, from: data)
+    }
+}
+
+extension Owner: SearchResultItem {
+    var title: String {
+        return name
+    }
+    
+    
 }
