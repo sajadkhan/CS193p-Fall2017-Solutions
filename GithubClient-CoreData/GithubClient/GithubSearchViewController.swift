@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class GithubSearchViewController: UITableViewController {
 
+    let container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    
     @IBOutlet weak var searchBar: UISearchBar! {
         didSet {
             searchBar.delegate = self
@@ -26,7 +29,7 @@ class GithubSearchViewController: UITableViewController {
         }
     }
     
-    func performSearch(forText text: String) {
+    private func performSearch(forText text: String) {
         let request = GithubRequest()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         request.requestSearchAPI(for: filter.relatedGithubSearchAPI!,
@@ -39,9 +42,46 @@ class GithubSearchViewController: UITableViewController {
                                         self.searchResults.removeAll()
                                         if let items = items {
                                             self.searchResults = items
+                                            self.updateDatabase(with: items)
+                                            print("\(items.count) results found")
                                         }
                                         self.tableView.reloadData()
                                     }
+        }
+    }
+    
+    // Perfomrs a background save of the recently fetched items from Github using search API.
+    private func updateDatabase(with items: [SearchResultItem]) {
+        container?.performBackgroundTask { [weak self] context in
+            for item in items {
+                if let repo = item as? GithubRepository {
+                    _ = try? Repository.findOrCreateRepository(matching: repo, in: context)
+                }
+                if let user = item as? GithubOwner {
+                    _ = try? Owner.findOrCreateOwner(matching: user, in: context)
+                }
+                if let code = item as? GithubCode {
+                    _ = try? Code.createCodeObject(matching: code, in: context)
+                }
+            }
+            try? context.save()
+            self?.printDatabaseStatistics()
+        }
+    }
+    
+    private func printDatabaseStatistics() {
+        if let context = container?.viewContext {
+            context.perform {
+                if let repoCount = try? context.count(for: Repository.fetchRequest()) {
+                    print("repoCount = \(repoCount)")
+                }
+                if let usersCount = try? context.count(for: Owner.fetchRequest()) {
+                    print("ownerCount = \(usersCount)")
+                }
+                if let codeCount = try? context.count(for: Code.fetchRequest()) {
+                    print("codeCount = \(codeCount)")
+                }
+            }
         }
     }
     

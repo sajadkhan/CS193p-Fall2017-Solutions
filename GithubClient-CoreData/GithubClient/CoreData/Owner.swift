@@ -13,7 +13,7 @@ class Owner: NSManagedObject {
     // Factory method to create new owner in the database, from the given information of a github owner. Only unique insertions are possible so if owner exist already inthe database, this method returns that owner and not create one.
     class func findOrCreateOwner(matching githubOwner: GithubOwner, in context: NSManagedObjectContext) throws -> Owner {
         let request: NSFetchRequest<Owner> = Owner.fetchRequest()
-        request.predicate = NSPredicate(format: "id = %@", githubOwner.id)
+        request.predicate = NSPredicate(format: "id = %d", githubOwner.id)
         
         do {
             let matches = try context.fetch(request)
