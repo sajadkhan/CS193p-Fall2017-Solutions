@@ -16,14 +16,14 @@ struct GithubRepository: Codable {
     let owner: GithubOwner
     let isPrivate: Bool
     let description: String?
-    let createdDate: String?
+    let createdAt: String?
     let size: Int?
     let language: String?
 
     enum CodingKeys: String, CodingKey {
         case fullName = "full_name"
         case isPrivate = "private"
-        case createdDate = "created_at"
+        case createdAt = "created_at"
         case id, name, description,size, language, owner
     }
         
@@ -38,5 +38,17 @@ extension GithubRepository: SearchResultItem {
     }
     var subtitle: String {
         return fullName
+    }
+}
+
+extension GithubRepository {
+    var createdDate: Date? {
+        if let dateString = createdAt {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            return formatter.date(from: dateString)
+        }
+        return nil
     }
 }
