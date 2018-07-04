@@ -8,12 +8,12 @@
 
 import Foundation
 
-struct Repository: Codable {
+struct GithubRepository: Codable {
     
     let id: Int
     let name: String
     let fullName: String
-    let owner: Owner
+    let owner: GithubOwner
     let isPrivate: Bool
     let description: String?
     let createdDate: String?
@@ -27,12 +27,12 @@ struct Repository: Codable {
         case id, name, description,size, language, owner
     }
         
-    static func decodeDataWithArrayType(data: Data) -> [Repository]? {
-        return try? JSONDecoder().decode([Repository].self, from: data)
+    static func decodeDataWithArrayType(data: Data) -> [GithubRepository]? {
+        return try? JSONDecoder().decode([GithubRepository].self, from: data)
     }
 }
 
-extension Repository: SearchResultItem {
+extension GithubRepository: SearchResultItem {
     var title: String {
         return name
     }

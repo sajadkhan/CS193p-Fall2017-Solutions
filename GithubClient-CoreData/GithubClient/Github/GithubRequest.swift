@@ -34,12 +34,12 @@ struct GithubRequest {
     }
     
     // Fetch data from network
-    private func requestData(forURL url: URL, completion: @escaping (QueryResult?, Error?) -> (Void)) {
+    private func requestData(forURL url: URL, completion: @escaping (GithubQueryResult?, Error?) -> (Void)) {
         let task = URLSession.shared.dataTask(with: url) { (data, urlResponse, error) in
             if error != nil {
                 completion(nil, error)
             } else if let data = data,
-                let result = QueryResult(data: data) {
+                let result = GithubQueryResult(data: data) {
                 completion(result, error)
             }
         }
@@ -72,11 +72,11 @@ struct GithubRequest {
                     var resultItems: [SearchResultItem]?
                     switch api {
                     case .repo:
-                        resultItems = Repository.decodeDataWithArrayType(data: resultItemsData)
+                        resultItems = GithubRepository.decodeDataWithArrayType(data: resultItemsData)
                     case .users:
-                        resultItems = Owner.decodeDataWithArrayType(data: resultItemsData)
+                        resultItems = GithubOwner.decodeDataWithArrayType(data: resultItemsData)
                     case .code:
-                        resultItems = Code.decodeDataWithArrayType(data: resultItemsData)
+                        resultItems = GithubCode.decodeDataWithArrayType(data: resultItemsData)
                     }
                     completion(resultItems)
                 } else {

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct Owner: Codable {
+struct GithubOwner: Codable {
     let id: Int
     let name: String
     let avatarURL: String
@@ -18,12 +18,12 @@ struct Owner: Codable {
         case id
     }
     
-    static func decodeDataWithArrayType(data: Data) -> [Owner]? {
-        return try? JSONDecoder().decode([Owner].self, from: data)
+    static func decodeDataWithArrayType(data: Data) -> [GithubOwner]? {
+        return try? JSONDecoder().decode([GithubOwner].self, from: data)
     }
 }
 
-extension Owner: SearchResultItem {
+extension GithubOwner: SearchResultItem {
     var title: String {
         return name
     }

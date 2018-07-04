@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct QueryResult {
+struct GithubQueryResult {
     public typealias PropertyList = Any
     
     private var result = [String:Any]()

@@ -7,17 +7,17 @@
 //
 
 import Foundation
-struct Code: Codable {
+struct GithubCode: Codable {
     let name: String
-    let repository: Repository
+    let repository: GithubRepository
     let path: String
     
-    static func decodeDataWithArrayType(data: Data) -> [Code]? {
-        return try? JSONDecoder().decode([Code].self, from: data)
+    static func decodeDataWithArrayType(data: Data) -> [GithubCode]? {
+        return try? JSONDecoder().decode([GithubCode].self, from: data)
     }
 }
 
-extension Code: SearchResultItem {
+extension GithubCode: SearchResultItem {
     var title: String {
         return name
     }
