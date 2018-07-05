@@ -6,16 +6,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GithubClient/CoreData/Code.swift"
-            timestampString = "552396576.8941849"
+            timestampString = "552469307.664254"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "15"
-            endingLineNumber = "15"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
             landmarkName = "createCodeObject(matching:in:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static GithubClient.Code.createCodeObject(matching: GithubClient.GithubCode, in: __ObjC.NSManagedObjectContext) throws -&gt; GithubClient.Code"
+                  moduleName = "GithubClient"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Developer/CS193p-Fall2017-Solutions/GithubClient-CoreData/GithubClient/CoreData/Code.swift"
+                  timestampString = "552469774.245209"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "747">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static GithubClient.Code.createCodeObject(matching: GithubClient.GithubCode, in: __ObjC.NSManagedObjectContext) throws -&gt; GithubClient.Code"
+                  moduleName = "GithubClient"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Developer/CS193p-Fall2017-Solutions/GithubClient-CoreData/GithubClient/CoreData/Code.swift"
+                  timestampString = "552469774.255012"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "791">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GithubClient/GithubSearchViewController.swift"
+            timestampString = "552473187.157279"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "updateDatabase(with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

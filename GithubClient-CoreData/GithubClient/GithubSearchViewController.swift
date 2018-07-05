@@ -64,11 +64,15 @@ class GithubSearchViewController: UITableViewController {
                     _ = try? Code.createCodeObject(matching: code, in: context)
                 }
             }
-            try? context.save()
+            do {
+                try context.save()
+            } catch {
+                print(error)
+            }
             self?.printDatabaseStatistics()
         }
     }
-    
+    // Utility method to debug database saves
     private func printDatabaseStatistics() {
         if let context = container?.viewContext {
             context.perform {
