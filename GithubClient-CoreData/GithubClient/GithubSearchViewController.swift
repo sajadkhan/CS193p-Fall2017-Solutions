@@ -11,7 +11,7 @@ import CoreData
 
 class GithubSearchViewController: UITableViewController {
 
-    let container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    let container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.dataController?.persistentContainer
     
     @IBOutlet weak var searchBar: UISearchBar! {
         didSet {

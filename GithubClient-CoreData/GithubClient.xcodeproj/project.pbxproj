@@ -10,6 +10,7 @@
 		0601048720EB68A300F7B529 /* ChooseFilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0601048620EB68A300F7B529 /* ChooseFilterTableViewController.swift */; };
 		0614C46A20F0A200007D3C39 /* FetchedResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0614C46920F0A1FF007D3C39 /* FetchedResultsTableViewController.swift */; };
 		0614C46C20F0A26C007D3C39 /* RepositoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0614C46B20F0A26B007D3C39 /* RepositoryTableViewController.swift */; };
+		0614C46E20F0AF93007D3C39 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0614C46D20F0AF93007D3C39 /* DataController.swift */; };
 		065F335620ECC0DC00674031 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065F335520ECC0DC00674031 /* Repository.swift */; };
 		065F335820ECC10700674031 /* Owner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065F335720ECC10700674031 /* Owner.swift */; };
 		065F335A20ECC11E00674031 /* Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065F335920ECC11E00674031 /* Code.swift */; };
@@ -30,6 +31,7 @@
 		0601048620EB68A300F7B529 /* ChooseFilterTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseFilterTableViewController.swift; sourceTree = "<group>"; };
 		0614C46920F0A1FF007D3C39 /* FetchedResultsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsTableViewController.swift; sourceTree = "<group>"; };
 		0614C46B20F0A26B007D3C39 /* RepositoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTableViewController.swift; sourceTree = "<group>"; };
+		0614C46D20F0AF93007D3C39 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		065F335520ECC0DC00674031 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		065F335720ECC10700674031 /* Owner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Owner.swift; sourceTree = "<group>"; };
 		065F335920ECC11E00674031 /* Code.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Code.swift; sourceTree = "<group>"; };
@@ -91,8 +93,9 @@
 				0665AD7C20E8774C00606887 /* Supporting Files */,
 				0665AD6920E8773700606887 /* GithubSearchViewController.swift */,
 				0601048620EB68A300F7B529 /* ChooseFilterTableViewController.swift */,
-				0614C46920F0A1FF007D3C39 /* FetchedResultsTableViewController.swift */,
 				0614C46B20F0A26B007D3C39 /* RepositoryTableViewController.swift */,
+				0614C46920F0A1FF007D3C39 /* FetchedResultsTableViewController.swift */,
+				0614C46D20F0AF93007D3C39 /* DataController.swift */,
 				065F335B20ECC12600674031 /* CoreData */,
 				0665AD8420E8994700606887 /* Github */,
 				0665AD6B20E8773700606887 /* Main.storyboard */,
@@ -213,6 +216,7 @@
 				0601048720EB68A300F7B529 /* ChooseFilterTableViewController.swift in Sources */,
 				0665AD8120E8975600606887 /* GithubRepository.swift in Sources */,
 				0665AD7F20E8791800606887 /* GithubRequest.swift in Sources */,
+				0614C46E20F0AF93007D3C39 /* DataController.swift in Sources */,
 				065F335620ECC0DC00674031 /* Repository.swift in Sources */,
 				065F335820ECC10700674031 /* Owner.swift in Sources */,
 				06E93DD020EB7A3800DCDC5F /* GithubCode.swift in Sources */,

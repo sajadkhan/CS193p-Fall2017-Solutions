@@ -11,15 +11,15 @@ import CoreData
 
 class RepositoryTableViewController: FetchedResultsTableViewController {
 
-    var fetchedResultsViewController: NSFetchedResultsController<Repository>?
-    let container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    private var fetchedResultsViewController: NSFetchedResultsController<Repository>?
+    private let container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.dataController?.persistentContainer
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeFetchedResultsController()
     }
     
-    func initializeFetchedResultsController() {
+    private func initializeFetchedResultsController() {
         if let context = container?.viewContext {
             let request: NSFetchRequest<Repository> = Repository.fetchRequest()
             let nameSort = NSSortDescriptor(key: "name", ascending: true)
@@ -40,19 +40,6 @@ class RepositoryTableViewController: FetchedResultsTableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultsViewController?.sections?.count ?? 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sections = fetchedResultsViewController?.sections, sections.count > 0 {
-            return sections[section].numberOfObjects
-        } else {
-            return 0
-        }
-    }
-
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "repositoryCell", for: indexPath)
         guard let repositoryMO = fetchedResultsViewController?.object(at: indexPath) else {
@@ -65,4 +52,35 @@ class RepositoryTableViewController: FetchedResultsTableViewController {
         return cell
     }
 
+}
+
+// UITableViewDataSource+NSFetchedResultControllerDelegate
+extension RepositoryTableViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return fetchedResultsViewController?.sections?.count ?? 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let sections = fetchedResultsViewController?.sections, sections.count > 0 {
+            return sections[section].numberOfObjects
+        } else {
+            return 0
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let sections = fetchedResultsViewController?.sections, sections.count > 0 {
+            return sections[section].name
+        } else {
+            return nil
+        }
+    }
+    
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return fetchedResultsViewController?.sectionIndexTitles
+    }
+    
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return fetchedResultsViewController?.section(forSectionIndexTitle: title, at: index) ?? 0
+    }
 }
