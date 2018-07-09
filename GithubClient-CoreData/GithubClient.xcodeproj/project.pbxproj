@@ -24,6 +24,8 @@
 		0665AD8120E8975600606887 /* GithubRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665AD8020E8975600606887 /* GithubRepository.swift */; };
 		0665AD8620E899DF00606887 /* GithubOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665AD8520E899DF00606887 /* GithubOwner.swift */; };
 		0665AD8820E8B14D00606887 /* GithubQueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665AD8720E8B14D00606887 /* GithubQueryResult.swift */; };
+		06CE1ACE20F308B1001AFD6A /* OwnerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CE1ACD20F308B1001AFD6A /* OwnerTableViewController.swift */; };
+		06CE1AD020F308BF001AFD6A /* CodeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CE1ACF20F308BF001AFD6A /* CodeTableViewController.swift */; };
 		06E93DD020EB7A3800DCDC5F /* GithubCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E93DCF20EB7A3800DCDC5F /* GithubCode.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +49,8 @@
 		0665AD8020E8975600606887 /* GithubRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubRepository.swift; sourceTree = "<group>"; };
 		0665AD8520E899DF00606887 /* GithubOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubOwner.swift; sourceTree = "<group>"; };
 		0665AD8720E8B14D00606887 /* GithubQueryResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubQueryResult.swift; sourceTree = "<group>"; };
+		06CE1ACD20F308B1001AFD6A /* OwnerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnerTableViewController.swift; sourceTree = "<group>"; };
+		06CE1ACF20F308BF001AFD6A /* CodeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeTableViewController.swift; sourceTree = "<group>"; };
 		06E93DCF20EB7A3800DCDC5F /* GithubCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubCode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,6 +98,8 @@
 				0665AD6920E8773700606887 /* GithubSearchViewController.swift */,
 				0601048620EB68A300F7B529 /* ChooseFilterTableViewController.swift */,
 				0614C46B20F0A26B007D3C39 /* RepositoryTableViewController.swift */,
+				06CE1ACD20F308B1001AFD6A /* OwnerTableViewController.swift */,
+				06CE1ACF20F308BF001AFD6A /* CodeTableViewController.swift */,
 				0614C46920F0A1FF007D3C39 /* FetchedResultsTableViewController.swift */,
 				0614C46D20F0AF93007D3C39 /* DataController.swift */,
 				065F335B20ECC12600674031 /* CoreData */,
@@ -217,9 +223,11 @@
 				0665AD8120E8975600606887 /* GithubRepository.swift in Sources */,
 				0665AD7F20E8791800606887 /* GithubRequest.swift in Sources */,
 				0614C46E20F0AF93007D3C39 /* DataController.swift in Sources */,
+				06CE1ACE20F308B1001AFD6A /* OwnerTableViewController.swift in Sources */,
 				065F335620ECC0DC00674031 /* Repository.swift in Sources */,
 				065F335820ECC10700674031 /* Owner.swift in Sources */,
 				06E93DD020EB7A3800DCDC5F /* GithubCode.swift in Sources */,
+				06CE1AD020F308BF001AFD6A /* CodeTableViewController.swift in Sources */,
 				0665AD6820E8773700606887 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
