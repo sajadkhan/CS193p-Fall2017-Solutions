@@ -22,11 +22,15 @@ class RepositoryTableViewController: FetchedResultsTableViewController {
     private func initializeFetchedResultsController() {
         if let context = container?.viewContext {
             let request: NSFetchRequest<Repository> = Repository.fetchRequest()
+            let ownerSort = NSSortDescriptor(key: "owner.name", ascending: true)
             let nameSort = NSSortDescriptor(key: "name", ascending: true)
-            request.sortDescriptors = [nameSort]
+            request.sortDescriptors = [nameSort, ownerSort]
+            //sectionNameKeyPath is set to owner.name to have list divided into sections by owners
+            // The sectionNameKeyPath property must also be an NSSortDescriptor instance.
+            //The NSSortDescriptor must be the first descriptor in the array passed to the fetch request.
             fetchedResultsViewController = NSFetchedResultsController(fetchRequest: request,
                                                                       managedObjectContext: context,
-                                                                      sectionNameKeyPath: nil,
+                                                                      sectionNameKeyPath: "owner.name",
                                                                       cacheName: nil)
             fetchedResultsViewController?.delegate = self
             do {
